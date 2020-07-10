@@ -10,7 +10,6 @@ const startApp = () => {
   getFromLocalStorage();
   if (user.name) {
     showWelcomePage();
-    // takeToWebsite();
   } else {
     getApiData(randomString()).then(() => {
       paintRequestInfo();
@@ -25,6 +24,7 @@ const startApp = () => {
 const showWelcomePage = () => {
   paintWelcome();
   getApiQuotes();
+  listenKeyEnd();
 };
 
 const randomizeAvatar = () => {
@@ -72,6 +72,11 @@ const listenAcceptNameAvatar = () => {
   const happyEl = document.querySelector('.js-happy');
   happyEl.addEventListener('click', showWelcomePage);
 };
+
+const listenKeyEnd = () => {
+  document.addEventListener('keydown', fadeOut);
+};
+
 // Paint and refresh avatar
 
 const paintAvatar = (username) => {
@@ -127,9 +132,9 @@ const getWelcomeHtmlCode = () => {
   let htmlCode = '';
   htmlCode += `<h1>Hello, ${user.name}</h1>`;
   htmlCode += `     <div class="avatar__container">`;
-  htmlCode += `           <img src="${user.avatar}" alt="avatar image" class="avatar">`;
+  htmlCode += `           <img src="${user.avatar}" alt="avatar image" class="avatar fade-in">`;
   htmlCode += `     </div>`;
-  htmlCode += `     <p class="quote js-quote">quote</p>`;
+  htmlCode += `     <p class="quote fade-in js-quote"></p>`;
   htmlCode += `   </div>`;
   htmlCode += `</div>`;
   return htmlCode;

@@ -6,7 +6,6 @@
   width: 200px;
   height: 200px;
   object-fit: contain;
-  border: solid 2px red;
 }
 
 .fade-out {
@@ -19,5 +18,18 @@
   }
   to {
     opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
