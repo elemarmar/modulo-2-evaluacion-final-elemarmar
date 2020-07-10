@@ -3,22 +3,29 @@
 // global data
 let user = {};
 let avatarUrl = '';
+let movieQuotes = '';
 
 // start app
 const startApp = () => {
   getFromLocalStorage();
   if (user.name) {
-    paintWelcome();
+    showWelcomePage();
+    // takeToWebsite();
   } else {
     getApiData(randomString()).then(() => {
       paintRequestInfo();
       listenNameInput();
       listenRefreshAvatar();
+      listenAcceptNameAvatar();
     });
   }
 };
 
 // helpers
+const showWelcomePage = () => {
+  paintWelcome();
+  getApiQuotes();
+};
 
 const randomizeAvatar = () => {
   const newAvatar = randomString();
@@ -27,6 +34,20 @@ const randomizeAvatar = () => {
 
 const randomString = () => {
   return Math.random().toString(36).substr(2, 5);
+};
+
+const randomNumber = (max) => {
+  return Math.floor(Math.random() * max);
+};
+
+const takeToWebsite = () => {
+  window.location.href = './series.html';
+};
+
+const fadeOut = () => {
+  const page = document.querySelector('.welcome__area');
+  page.classList.add('fade-out');
+  const temp = setTimeout(takeToWebsite, 4000);
 };
 
 // listen events
@@ -47,6 +68,10 @@ const listenRefreshAvatar = () => {
   setInLocalStorage();
 };
 
+const listenAcceptNameAvatar = () => {
+  const happyEl = document.querySelector('.js-happy');
+  happyEl.addEventListener('click', showWelcomePage);
+};
 // Paint and refresh avatar
 
 const paintAvatar = (username) => {
@@ -79,7 +104,11 @@ const getRequestInfoHtmlCode = (url) => {
   htmlCode += `       <div class="avatar__container">`;
   htmlCode += `           <img src="${url}" alt="avatar image" class="avatar">`;
   htmlCode += `      </div>`;
-  htmlCode += `      <p class="instructions">Not happy? <i class="fas fa-sync-alt js-refresh-avatar refresh-avatar"></i> </p>`;
+  htmlCode += `      <p class="avatar-description">`;
+  htmlCode += `           <span class="js-not-happy">Not happy?</span>`;
+  htmlCode += `           <i class="fas fa-sync-alt js-refresh-avatar refresh-avatar"></i>`;
+  htmlCode += `           <span class="js-happy">Happy?</span>`;
+  htmlCode += `      </p>`;
   htmlCode += `   </div>`;
   htmlCode += `</div>`;
   return htmlCode;
@@ -100,7 +129,7 @@ const getWelcomeHtmlCode = () => {
   htmlCode += `     <div class="avatar__container">`;
   htmlCode += `           <img src="${user.avatar}" alt="avatar image" class="avatar">`;
   htmlCode += `     </div>`;
-  htmlCode += `     <p class="quote">quote</p>`;
+  htmlCode += `     <p class="quote js-quote">quote</p>`;
   htmlCode += `   </div>`;
   htmlCode += `</div>`;
   return htmlCode;
@@ -112,6 +141,16 @@ const getApiData = (string) => {
   return fetch(
     `https://avatars.dicebear.com/api/avataaars/${string}.svg?options[mouth][]=smile`
   ).then((data) => (avatarUrl = data.url));
+};
+
+const getApiQuotes = () => {
+  fetch('./api/data.json')
+    .then((response) => response.json())
+    .then((data) => {
+      const movieQuotes = data;
+      const randomQuoteEl = document.querySelector('.js-quote');
+      randomQuoteEl.innerHTML = movieQuotes[randomNumber(movieQuotes.length)];
+    });
 };
 
 // local storage

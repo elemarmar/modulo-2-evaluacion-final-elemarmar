@@ -8,3 +8,16 @@
   object-fit: contain;
   border: solid 2px red;
 }
+
+.fade-out {
+  animation: fadeOut 4s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
