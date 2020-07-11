@@ -20,5 +20,11 @@
   "dependencies": {
     "express": "^4.17.1",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-sass": "^4.1.0"
   }
 }
