@@ -41,7 +41,7 @@ const randomNumber = (max) => {
 };
 
 const takeToWebsite = () => {
-  window.location.href = './series.html';
+  window.location.href = './app.html';
 };
 
 const fadeOut = () => {

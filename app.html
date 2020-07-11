@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/24e900d194.js"
+      crossorigin="anonymous"
+    ></script>
+    <link href="./styles/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header></header>
+    <main class="movie-selection__area js-selection-area">
+      <div class="media__container">
+        <div
+          class="media__poster"
+          style="
+            background-image: url('http://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg');
+          "
+        >
+          <div class="media__poster-check">
+            <span class="media__poster-seen"><i class="far fa-eye"></i></span>
+            <span class="media__poster-favorite"
+              ><i class="fas fa-heart"></i
+            ></span>
+          </div>
+          <div class="media__poster-rating">
+            <span class="media__poster-stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </span>
+            <span class="media__poster-score">4.10</span>
+          </div>
+        </div>
+        <div class="media__simple-info">
+          <h4 class="media__poster-title">Frozen II</h4>
+          <p class="media__poster-eyar">2019</p>
+        </div>
+      </div>
+
+      <div class="init-expand"></div>
+
+      <div>
+        <div class="cover">
+          <div class="cover-imgs" style="background-image: url('');"></div>
+          <div class="cover-overlay cover-info-overlay">
+            <i
+              class="fa fa-heart actions-favorites tooltipped"
+              data-toggle="tooltip"
+              data-placement="auto bottom"
+              data-delay='{ "show": "800", "hide": "100" }'
+            ></i>
+            <i
+              class="fa fa-eye actions-watched tooltipped"
+              data-toggle="tooltip"
+              data-placement="auto bottom"
+              data-delay='{ "show": "800", "hide": "100" }'
+            ></i>
+
+            <div class="rating" style="display: block;">
+              <div class="rating-stars">
+                <i class="fa fa-star rating-star"></i>
+
+                <span class="fa-stack rating-star-half-container">
+                  <i class="fa fa-star fa-stack-1x rating-star-half-empty"></i>
+                  <i class="fa fa-star-half fa-stack-1x rating-star-half"></i>
+                </span>
+                <i class="fa fa-star rating-star-empty"></i>
+              </div>
+              <div class="rating-value"></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="title">titl</p>
+        <p class="year">
+          year
+        </p>
+      </div>
+    </main>
+    <footer></footer>
+    <script src="./js/main2.js"></script>
+  </body>
+</html>
