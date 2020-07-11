@@ -1,0 +1,385 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol,
+ul {
+  list-style: none; }
+
+blockquote,
+q {
+  quotes: none; }
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+.top-bar {
+  height: 85px;
+  width: 100%;
+  box-shadow: 0px 6px 8px -4px rgba(0, 0, 0, 0.9);
+  z-index: 10;
+  width: 100%;
+  opacity: 0.97;
+  position: fixed;
+  top: 0; }
+  .top-bar .app-title {
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    border: solid 1px red; }
+  .top-bar .nav-menu {
+    display: flex; }
+  .top-bar .nav-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border: solid orange 1px; }
+    .top-bar .nav-options .user-profile {
+      background-color: #6bcadb;
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background-image: url("https://avatars.dicebear.com/api/avataaars/Julia.svg?options[mouth][]=smile"); }
+    .top-bar .nav-options .menu-icon {
+      font-size: 20px;
+      margin: 0 20px;
+      cursor: pointer; }
+  .top-bar .filter-bar {
+    z-index: 10;
+    width: 100%;
+    opacity: 0.97;
+    background-color: #17181b;
+    border: solid 1px red;
+    display: flex;
+    align-items: stretch; }
+
+.search__container {
+  margin-left: auto;
+  display: flex;
+  align-items: center; }
+  .search__container .search-box,
+  .search__container .btn-search {
+    margin: 0 20px; }
+
+.search-wrapper {
+  border: solid 1px salmon;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+  position: relative; }
+  .search-wrapper:hover::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: blue; }
+
+.search-item {
+  margin: 0 20px;
+  padding: 0 10px;
+  color: white;
+  position: relative;
+  border: 1px solid orange; }
+
+.avatar__container {
+  height: 200px; }
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  object-fit: contain; }
+
+.fade-out {
+  animation: fadeOut 4s ease forwards; }
+
+@keyframes fadeOut {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+.fade-in {
+  animation: fadeIn 3s ease forwards; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+* {
+  box-sizing: border-box; }
+
+body,
+html {
+  background-color: #17181b; }
+
+/************************************/
+.movie-selection__area {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #17181b;
+  padding-top: 94px;
+  height: 100vh; }
+
+.media__container {
+  min-width: 140px;
+  margin: 10px; }
+  .media__container .media__poster {
+    height: 200px;
+    min-width: 140px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    color: white;
+    border-radius: 3px;
+    transition: border 0.25s ease; }
+    .media__container .media__poster:hover {
+      border: 2px solid #2468cc; }
+  .media__container .media__simple-info p,
+  .media__container .media__simple-info h4 {
+    margin: 0;
+    color: white;
+    max-width: 140px;
+    height: 20px;
+    overflow: hidden; }
+
+.media__poster:hover .media__poster-check,
+.media__poster:hover .media__poster-rating {
+  opacity: 1; }
+
+.media__poster-check {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s; }
+
+.media__poster-rating {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s; }
+
+.media__poster-seen {
+  font-weight: 900;
+  position: absolute;
+  font-size: 18px;
+  color: #fff;
+  left: 0; }
+
+.media__poster-favorite {
+  font-weight: 900;
+  position: absolute;
+  font-size: 18px;
+  color: #fff;
+  right: 0; }
+
+.btn-search {
+  cursor: pointer;
+  color: white; }
+
+/********/
+#init-content {
+  width: 100%;
+  /* Full Width */
+  height: 5px;
+  background: #000;
+  margin-top: 14%; }
+
+.init-expand {
+  width: 100%;
+  height: 1px;
+  margin: 2px 0;
+  background: #2187e7;
+  position: absolute;
+  box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
+  -moz-animation: fullexpand 10s ease-out;
+  -webkit-animation: fullexpand 10s ease-out; }
+
+/* Full Width Animation Bar */
+@-webkit-keyframes fullexpand {
+  0% {
+    width: 0px; }
+  100% {
+    width: 100%; } }
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@-webkit-keyframes spinoff {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(-360deg); } }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(359deg); } }
+
+@keyframes blinker {
+  50% {
+    opacity: 0; } }
+
+/**************/
+.cover {
+  position: relative;
+  background-image: url("http://static.tvmaze.com/uploads/images/medium_portrait/263/659037.jpg");
+  background-size: 134px 196px;
+  width: 134px;
+  height: 196px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 10px;
+  cursor: pointer; }
+
+.cover-overlay {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  transition: opacity 500ms ease-in;
+  opacity: 0; }
+
+.cover-info-overlay {
+  padding: 88px 0;
+  background: rgba(23, 24, 27, 0.6);
+  border: 2px solid rgba(23, 24, 27, 0.6);
+  border-radius: 4px;
+  transition: border-color 0.25s ease; }
+
+.cover-info-overlay:hover {
+  border: 3px solid #2d75df;
+  transition: border-color 0.5s;
+  opacity: 1; }
+
+html,
+body {
+  font-family: "Open Sans"; }

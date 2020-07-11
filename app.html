@@ -9,10 +9,42 @@
       src="https://kit.fontawesome.com/24e900d194.js"
       crossorigin="anonymous"
     ></script>
-    <link href="./styles/styles.css" rel="stylesheet" />
+    <link href="./public/styles/main.css" rel="stylesheet" />
   </head>
   <body>
-    <header></header>
+    <header class="top-bar">
+      <h1 class="app-title">Series Time</h1>
+      <nav class="nav-menu">
+        <ul class="filter-bar">
+          <div class="search-wrapper search__movies">
+            <span class="search-item">Movies</span>
+          </div>
+          <div class="search-wrapper search__series">
+            <span class="search-item">Series</span>
+          </div>
+          <div class="search-wrapper search__favorites">
+            <span class="search-item">Favorites</span>
+          </div>
+          <div class="search-wrapper search__genre">
+            <span class="search-item">Genre</span>
+          </div>
+          <div class="search__container">
+            <input type="text" name="search" class="js-search search-box" />
+            <span class="btn-search js-btn-search"
+              ><i class="fas fa-search"></i
+            ></span>
+          </div>
+        </ul>
+        <ul class="nav-options">
+          <li class="timer"><i class="fas fa-stopwatch menu-icon"></i></li>
+          <li class="user-lists"><i class="fas fa-list-ul menu-icon"></i></li>
+          <li class="user-favorites"><i class="fas fa-heart menu-icon"></i></li>
+          <li class="user-profile">
+            <div class="user-avatar"></div>
+          </li>
+        </ul>
+      </nav>
+    </header>
     <main class="movie-selection__area js-selection-area">
       <div class="media__container">
         <div
@@ -44,9 +76,9 @@
         </div>
       </div>
 
-      <div class="init-expand"></div>
+      <!-- <div class="init-expand"></div> -->
 
-      <div>
+      <!-- <div>
         <div class="cover">
           <div class="cover-imgs" style="background-image: url('');"></div>
           <div class="cover-overlay cover-info-overlay">
@@ -82,9 +114,9 @@
         <p class="year">
           year
         </p>
-      </div>
+      </div> -->
     </main>
     <footer></footer>
-    <script src="./js/main2.js"></script>
+    <script src="./public/js/main2.js"></script>
   </body>
 </html>

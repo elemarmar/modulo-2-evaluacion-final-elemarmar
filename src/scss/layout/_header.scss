@@ -1,0 +1,90 @@
+.top-bar {
+  height: 85px;
+  width: 100%;
+  box-shadow: 0px 6px 8px -4px rgba(0, 0, 0, 0.9);
+  z-index: 10;
+  width: 100%;
+  opacity: 0.97;
+  position: fixed;
+  top: 0;
+
+  .app-title {
+    color: $TitleBarText;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    border: solid 1px red;
+  }
+
+  .nav-menu {
+    display: flex;
+  }
+  .nav-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    border: solid orange 1px;
+
+    .user-profile {
+      background-color: rgb(107, 202, 219);
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background-image: url('https://avatars.dicebear.com/api/avataaars/Julia.svg?options[mouth][]=smile');
+    }
+
+    .menu-icon {
+      font-size: 20px;
+      margin: 0 20px;
+      cursor: pointer;
+    }
+  }
+
+  .filter-bar {
+    z-index: 10;
+    width: 100%;
+    opacity: 0.97;
+    background-color: $FilterBarBg;
+    border: solid 1px red;
+    display: flex;
+    align-items: stretch;
+  }
+}
+
+.search__container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+
+  .search-box,
+  .btn-search {
+    margin: 0 20px;
+  }
+}
+
+.search-wrapper {
+  border: solid 1px salmon;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+  position: relative;
+
+  &:hover::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: blue;
+  }
+}
+.search-item {
+  margin: 0 20px;
+  padding: 0 10px;
+  color: white;
+  position: relative;
+  border: 1px solid orange;
+}

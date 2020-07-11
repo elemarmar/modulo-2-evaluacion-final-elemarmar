@@ -1,53 +1,60 @@
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
-.avatar__container {
-  height: 200px; }
-
-.avatar {
-  width: 200px;
-  height: 200px;
-  object-fit: contain; }
-
-.fade-out {
-  animation: fadeOut 4s ease forwards; }
-
-@keyframes fadeOut {
-  from {
-    opacity: 1; }
-  to {
-    opacity: 0; } }
-
-.fade-in {
-  animation: fadeIn 3s ease forwards; }
-
-@keyframes fadeIn {
-  from {
-    opacity: 0; }
-  to {
-    opacity: 1; } }
+body,
+html {
+  background-color: #17181b;
+}
 
 /************************************/
 .movie-selection__area {
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  background-color: #17181b;
+  padding-top: 94px;
+  height: 100vh;
+}
 
-.media__poster {
-  height: 200px;
-  width: 140px;
-  background-size: contain;
-  background-position: center;
-  position: relative;
-  color: white;
-  border-radius: 3px;
-  transition: border 0.25s ease; }
+.media__container {
+  //   flex-grow: 1;
+  min-width: 140px;
+  //   border: solid 1px salmon;
+  margin: 10px;
 
-.media__poster:hover {
-  border: 2px solid #2468cc; }
+  .media__poster {
+    height: 200px;
+    min-width: 140px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    color: white;
+    border-radius: 3px;
+    transition: border 0.25s ease;
+
+    &:hover {
+      border: 2px solid #2468cc;
+    }
+  }
+
+  .media__simple-info {
+    p,
+    h4 {
+      margin: 0;
+      color: white;
+      //   border: solid 1px red;
+      max-width: 140px;
+      height: 20px;
+      overflow: hidden;
+    }
+  }
+}
 
 .media__poster:hover .media__poster-check,
 .media__poster:hover .media__poster-rating {
-  opacity: 1; }
+  opacity: 1;
+}
 
 .media__poster-check {
   position: absolute;
@@ -55,7 +62,8 @@
   right: 0;
   left: 0;
   opacity: 0;
-  transition: opacity 0.5s; }
+  transition: opacity 0.5s;
+}
 
 .media__poster-rating {
   position: absolute;
@@ -63,29 +71,37 @@
   right: 0;
   left: 0;
   opacity: 0;
-  transition: opacity 0.5s; }
+  transition: opacity 0.5s;
+}
 
 .media__poster-seen {
   font-weight: 900;
   position: absolute;
   font-size: 18px;
   color: #fff;
-  left: 0; }
+  left: 0;
+}
 
 .media__poster-favorite {
   font-weight: 900;
   position: absolute;
   font-size: 18px;
   color: #fff;
-  right: 0; }
-
+  right: 0;
+}
+.btn-search {
+  cursor: pointer;
+  color: white;
+}
 /********/
+
 #init-content {
   width: 100%;
   /* Full Width */
   height: 5px;
   background: #000;
-  margin-top: 14%; }
+  margin-top: 14%;
+}
 
 .init-expand {
   width: 100%;
@@ -95,47 +111,66 @@
   position: absolute;
   box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
   -moz-animation: fullexpand 10s ease-out;
-  -webkit-animation: fullexpand 10s ease-out; }
+  -webkit-animation: fullexpand 10s ease-out;
+}
 
 /* Full Width Animation Bar */
+
 @-webkit-keyframes fullexpand {
   0% {
-    width: 0px; }
+    width: 0px;
+  }
+
   100% {
-    width: 100%; } }
+    width: 100%;
+  }
+}
 
 @-webkit-keyframes spin {
   0% {
-    -webkit-transform: rotate(0deg); }
+    -webkit-transform: rotate(0deg);
+  }
   100% {
-    -webkit-transform: rotate(360deg); } }
+    -webkit-transform: rotate(360deg);
+  }
+}
 
 @-webkit-keyframes spinoff {
   0% {
-    -webkit-transform: rotate(0deg); }
+    -webkit-transform: rotate(0deg);
+  }
   100% {
-    -webkit-transform: rotate(-360deg); } }
+    -webkit-transform: rotate(-360deg);
+  }
+}
 
 @keyframes spin {
   0% {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
+
   100% {
-    transform: rotate(359deg); } }
+    transform: rotate(359deg);
+  }
+}
 
 @keyframes blinker {
   50% {
-    opacity: 0; } }
+    opacity: 0;
+  }
+}
 
 /**************/
 .cover {
   position: relative;
-  background-image: url("http://static.tvmaze.com/uploads/images/medium_portrait/263/659037.jpg");
+  background-image: url('http://static.tvmaze.com/uploads/images/medium_portrait/263/659037.jpg');
   background-size: 134px 196px;
   width: 134px;
   height: 196px;
   border-radius: 4px;
   box-shadow: 0px 0px 10px;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .cover-overlay {
   width: 100%;
@@ -144,16 +179,19 @@
   background-position: center;
   position: absolute;
   transition: opacity 500ms ease-in;
-  opacity: 0; }
+  opacity: 0;
+}
 
 .cover-info-overlay {
   padding: 88px 0;
   background: rgba(23, 24, 27, 0.6);
   border: 2px solid rgba(23, 24, 27, 0.6);
   border-radius: 4px;
-  transition: border-color 0.25s ease; }
+  transition: border-color 0.25s ease;
+}
 
 .cover-info-overlay:hover {
   border: 3px solid #2d75df;
   transition: border-color 0.5s;
-  opacity: 1; }
+  opacity: 1;
+}

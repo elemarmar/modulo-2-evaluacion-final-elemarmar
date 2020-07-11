@@ -1,0 +1,35 @@
+.avatar__container {
+  height: 200px;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.fade-out {
+  animation: fadeOut 4s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

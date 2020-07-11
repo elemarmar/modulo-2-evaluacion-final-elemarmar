@@ -1,0 +1,15 @@
+@import 'core/reset';
+@import 'core/variables';
+@import 'core/mixins';
+
+@import 'components/top-bar';
+
+@import 'layout/header';
+
+@import 'pages/welcome-page';
+@import 'pages/selection-area';
+
+html,
+body {
+  font-family: $Font;
+}

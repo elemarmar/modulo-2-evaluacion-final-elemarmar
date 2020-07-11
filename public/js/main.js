@@ -149,7 +149,7 @@ const getApiData = (string) => {
 };
 
 const getApiQuotes = () => {
-  fetch('./api/data.json')
+  fetch('./public/api/data.json')
     .then((response) => response.json())
     .then((data) => {
       const movieQuotes = data;

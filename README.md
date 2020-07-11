@@ -64,3 +64,7 @@ Example: http://api.tvmaze.com/search/shows?q=girls
 **Para pintar imágenes que no haya**: 
 
  If no image exists yet, the *image* property will be NULL.  Buscar en otro lado.
+
+---
+
+4406
