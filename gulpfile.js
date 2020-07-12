@@ -1,6 +1,9 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const browserSync = require('browser-sync').create();
+const concat = require('gulp-concat');
+const rename = require('gulp-rename');
+const uglify = require('gulp-uglify');
 
 // Compile scss into css
 function style() {
@@ -17,6 +20,22 @@ function style() {
   );
 }
 
+// scripts
+var jsFiles = './src/js/*.js',
+  jsDest = './public/js';
+
+function scripts() {
+  return gulp
+    .src(jsFiles)
+    .pipe(
+      concat('scripts.js')
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('scripts.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsDest))
+    );
+}
+
 function watch() {
   browserSync.init({
     server: {
@@ -29,4 +48,5 @@ function watch() {
 }
 // What does this do
 exports.style = style;
+exports.scripts = scripts;
 exports.watch = watch;

@@ -85,7 +85,6 @@
     left: 0;
     bottom: 0;
     height: 3px;
-    background-color: blue;
   }
 }
 .search-item {
@@ -106,4 +105,16 @@
 
 .user-favorites {
   margin-right: 10px;
+}
+
+.filter-bar {
+  .search-wrapper:hover::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -5px;
+    height: 3px;
+    background-color: #2d72d9 !important;
+  }
 }

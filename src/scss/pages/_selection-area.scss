@@ -17,7 +17,7 @@ html {
 }
 
 .media__container {
-  //   flex-grow: 1;
+  flex-grow: 1;
   min-width: 140px;
   //   border: solid 1px salmon;
   margin: 10px;
@@ -109,10 +109,10 @@ html {
   margin: 2px 0;
   background: #2187e7;
   position: fixed;
-  top: 80px;
+  top: 63px;
   z-index: 100;
   box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
-  animation: fullexpand 8s ease-out;
+  animation: fullexpand 6s ease-out;
   //   -moz-animation: fullexpand 10s ease-out;
   //   -webkit-animation: fullexpand 10s ease-out;
   animation-fill-mode: forwards;
@@ -203,4 +203,52 @@ html {
   border: 3px solid #2d75df;
   transition: border-color 0.5s;
   opacity: 1;
+
+  .media__poster-check,
+  .media__poster-rating {
+    opacity: 1;
+  }
+
+  .make-favorite-heart:hover {
+    color: salmon;
+  }
+
+  .make-watch-eye:hover {
+    color: #2d72d9;
+  }
+
+  .media__poster-rating {
+    color: white;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+      .media__poster-stars {
+        color: rgba(241, 227, 31, 0.897);
+      }
+    }
+  }
+}
+
+.media__poster-check,
+.media__poster-rating {
+  padding: 5px;
+  margin: 0 5px;
+}
+
+.media__simple-info {
+  margin-top: 10px;
+  font-size: 14px;
+  width: 134px;
+  overflow: hidden;
+
+  .media__poster-title {
+    min-width: 500px !important;
+  }
+
+  .media__poster-year {
+    font-size: 11px;
+    color: #c3c5c7 !important;
+  }
 }

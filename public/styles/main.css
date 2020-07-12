@@ -497,8 +497,7 @@ a {
     right: 0;
     left: 0;
     bottom: 0;
-    height: 3px;
-    background-color: blue; }
+    height: 3px; }
 
 .search-item {
   margin: 0 20px;
@@ -515,6 +514,15 @@ a {
 
 .user-favorites {
   margin-right: 10px; }
+
+.filter-bar .search-wrapper:hover::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: -5px;
+  height: 3px;
+  background-color: #2d72d9 !important; }
 
 /*********************
  *   GENERAL AREA    *
@@ -703,6 +711,7 @@ html {
   height: 100vh; }
 
 .media__container {
+  flex-grow: 1;
   min-width: 140px;
   margin: 10px; }
   .media__container .media__poster {
@@ -777,10 +786,10 @@ html {
   margin: 2px 0;
   background: #2187e7;
   position: fixed;
-  top: 80px;
+  top: 63px;
   z-index: 100;
   box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
-  animation: fullexpand 8s ease-out;
+  animation: fullexpand 6s ease-out;
   animation-fill-mode: forwards; }
 
 /* Full Width Animation Bar */
@@ -846,6 +855,36 @@ html {
   border: 3px solid #2d75df;
   transition: border-color 0.5s;
   opacity: 1; }
+  .cover-info-overlay:hover .media__poster-check,
+  .cover-info-overlay:hover .media__poster-rating {
+    opacity: 1; }
+  .cover-info-overlay:hover .make-favorite-heart:hover {
+    color: salmon; }
+  .cover-info-overlay:hover .make-watch-eye:hover {
+    color: #2d72d9; }
+  .cover-info-overlay:hover .media__poster-rating {
+    color: white;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between; }
+    .cover-info-overlay:hover .media__poster-rating:hover .media__poster-stars {
+      color: rgba(241, 227, 31, 0.897); }
+
+.media__poster-check,
+.media__poster-rating {
+  padding: 5px;
+  margin: 0 5px; }
+
+.media__simple-info {
+  margin-top: 10px;
+  font-size: 14px;
+  width: 134px;
+  overflow: hidden; }
+  .media__simple-info .media__poster-title {
+    min-width: 500px !important; }
+  .media__simple-info .media__poster-year {
+    font-size: 11px;
+    color: #c3c5c7 !important; }
 
 html,
 body {
