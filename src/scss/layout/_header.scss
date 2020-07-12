@@ -18,6 +18,9 @@
 
   .nav-menu {
     display: flex;
+    margin-top: 0;
+    height: 35px;
+    padding-bottom: 5px;
   }
   .nav-options {
     display: flex;
@@ -99,4 +102,8 @@
     background-color: rgb(176, 224, 64) !important;
     border: 3px solid rgb(176, 224, 64);
   }
+}
+
+.user-favorites {
+  margin-right: 10px;
 }

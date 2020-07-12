@@ -1,0 +1,164 @@
+.btn-search {
+  content: '\f002';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-style: normal;
+  transition: color 0.5s;
+  //   color: $FilterBarIcon;
+  position: absolute;
+  top: 11px;
+  left: 7px;
+  z-index: 2;
+  font-size: 1.4em;
+}
+
+.clear {
+  display: block;
+  font-weight: bold;
+  transition: color 0.5s;
+  //   color: $FilterBarIcon;
+  position: absolute;
+  top: 8px;
+  right: 5px;
+  padding: 3px 5px;
+  font-size: 1.2em;
+}
+
+.search-box,
+.search-box:focus {
+  width: 130px;
+  background-color: $SearchBoxBg;
+  color: $FilterBarText;
+}
+
+.search__container {
+  .search-box {
+    line-height: normal;
+    -webkit-app-region: no-drag;
+    outline: none;
+    cursor: text;
+    width: 0px;
+    height: 18px;
+    position: relative;
+    background: $FilterBarBg no-repeat right center;
+    background-position: right 3px center;
+    border: solid 0px;
+    margin: 8px 3px 0;
+    padding: 1px 2px 3px;
+    padding-left: 25px;
+    border-radius: 10em;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    transition: width 0.5s;
+
+    &:focus {
+      cursor: auto;
+      &:before {
+        color: $FilterBarIconHover; //this doesn't work for some reason
+      }
+    }
+
+    &::-moz-placeholder,
+    &::-webkit-input-placeholder {
+      color: transparent;
+    }
+
+    &:focus::-webkit-input-placeholder {
+      color: rgba($FilterBarText, 0.7);
+    }
+  }
+}
+
+//////////
+.search {
+  &:before {
+    content: '\f002';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-style: normal;
+    transition: color 0.5s;
+    color: $FilterBarIcon;
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    z-index: 2;
+    font-size: 20px;
+  }
+
+  &.edited .clear {
+    display: block;
+    font-weight: bold;
+    transition: color 0.5s;
+    color: $FilterBarIcon;
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    padding: 3px 5px;
+    font-size: 1.2em;
+  }
+
+  &.edited input,
+  input:focus {
+    width: 130px;
+    background-color: $SearchBoxBg;
+    color: $FilterBarText;
+  }
+
+  &.edited,
+  &:hover {
+    cursor: pointer;
+    &:before {
+      color: $FilterBarIconHover;
+    }
+
+    input {
+      width: 130px;
+      background-color: $SearchBoxBg;
+      color: $FilterBarText;
+    }
+  }
+
+  input {
+    line-height: normal;
+    -webkit-app-region: no-drag;
+    outline: none;
+    cursor: text;
+    width: 0;
+    height: 18px;
+    position: relative;
+    background: $FilterBarBg no-repeat right center;
+    background-position: right 3px center;
+    border: solid 0px;
+    margin: 0 3px 0;
+    padding: 1px 2px 3px;
+    padding-left: 25px;
+    border-radius: 10em;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    transition: width 0.5s;
+
+    &:focus {
+      cursor: auto;
+      &:before {
+        color: $FilterBarIconHover; //this doesn't work for some reason
+      }
+    }
+
+    &::-moz-placeholder,
+    &::-webkit-input-placeholder {
+      color: transparent;
+    }
+
+    &:focus::-webkit-input-placeholder {
+      color: rgba($FilterBarText, 0.7);
+    }
+  }
+}
+
+.right {
+  margin-left: auto;
+}
+
+.search {
+  position: relative;
+}

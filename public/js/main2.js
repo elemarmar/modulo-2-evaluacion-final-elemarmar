@@ -115,15 +115,16 @@ const showRandomSelection = () => {
 
   let mediaSelection = [];
   for (const id of idSelection) {
-    getApiSeriesById(id).then((data) => {
-      // Check availabily
-      if (data.status !== 404) {
-        mediaSelection.push(data);
-        checkImage(data);
-      }
-      paintSelection(mediaSelection);
-      listenMakeFavoriteHeart();
-    });
+    getApiSeriesById(id)
+      .then((data) => {
+        // Check availabily
+        if (data.status !== 404) {
+          mediaSelection.push(data);
+          checkImage(data);
+        }
+        paintSelection(mediaSelection);
+      })
+      .then(listenMakeFavoriteHeart());
   }
   listenMenuBtns();
 };
@@ -145,10 +146,10 @@ const listenSearchBar = () => {
     }
   });
 };
-const listenSearchBtn = () => {
-  const searchInputBtnEl = document.querySelector('.js-btn-search');
-  searchInputBtnEl.addEventListener('click', searchMedia);
-};
+// const listenSearchBtn = () => {
+//   const searchInputBtnEl = document.querySelector('.js-btn-search');
+//   searchInputBtnEl.addEventListener('click', searchMedia);
+// };
 
 // listen favorites
 const listenMakeFavoriteHeart = () => {
@@ -164,7 +165,7 @@ const listenFavoritesBtn = () => {
 
 const listenMenuBtns = () => {
   listenSearchBar();
-  listenSearchBtn();
+  //   listenSearchBtn();
   listenFavoritesBtn();
   listenSeriesBtn();
   listenProfileBtn();

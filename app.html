@@ -16,25 +16,56 @@
       <h1 class="app-title">Series Time</h1>
       <nav class="nav-menu">
         <ul class="filter-bar">
-          <div class="search-wrapper search__movies">
-            <span class="search-item">Movies</span>
-          </div>
-          <div class="search-wrapper js-search__series">
-            <span class="search-item">Series</span>
-          </div>
-          <div class="search-wrapper js-search__favorites">
-            <span class="search-item">Favorites</span>
-          </div>
-          <div class="search-wrapper search__genre">
-            <span class="search-item">Genre</span>
-          </div>
-          <div class="search__container">
-            <input type="text" name="search" class="js-search search-box" />
-            <span class="btn-search js-btn-search"
-              ><i class="fas fa-search"></i
-            ></span>
+          <li class="search-wrapper search__movies filter">
+            <a class="search-item">Movies</a>
+          </li>
+          <li class="search-wrapper js-search__series filter">
+            <a class="search-item">Series</a>
+          </li>
+          <li class="search-wrapper js-search__favorites filter">
+            <a class="search-item">Favorites</a>
+          </li>
+          <li class="search-wrapper search__genre dropdown filter genres">
+            <a class="search-item">Genre</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <span data-value="<%= genre %>" class="value">All</span>
+              <span class="caret"
+                ><i class="fas fa-sort-down select-arrow"></i
+              ></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#" data-value="<%= c %>">Horror</a>
+              </li>
+              <li>
+                <a href="#" data-value="<%= c %>">Fantasy</a>
+              </li>
+              <li>
+                <a href="#" data-value="<%= c %>">Sci-fy</a>
+              </li>
+              <li>
+                <a href="#" data-value="<%= c %>">Horror</a>
+              </li>
+              <li>
+                <a href="#" data-value="<%= c %>">Romance</a>
+              </li>
+              <li>
+                <a href="#" data-value="<%= c %>">Comedy</a>
+              </li>
+            </ul>
+          </li>
+
+          <div class="right search search__container">
+            <input
+              id="searchbox"
+              type="text"
+              placeholder="Search"
+              autocomplete="off"
+              class="js-search"
+            />
           </div>
         </ul>
+
         <ul class="nav-options">
           <li class="timer"><i class="fas fa-stopwatch menu-icon"></i></li>
           <li class="user-lists"><i class="fas fa-list-ul menu-icon"></i></li>
