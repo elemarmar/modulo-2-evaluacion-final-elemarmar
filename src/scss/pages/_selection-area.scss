@@ -108,10 +108,14 @@ html {
   height: 1px;
   margin: 2px 0;
   background: #2187e7;
-  position: absolute;
+  position: fixed;
+  top: 80px;
+  z-index: 100;
   box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
-  -moz-animation: fullexpand 10s ease-out;
-  -webkit-animation: fullexpand 10s ease-out;
+  animation: fullexpand 8s ease-out;
+  //   -moz-animation: fullexpand 10s ease-out;
+  //   -webkit-animation: fullexpand 10s ease-out;
+  animation-fill-mode: forwards;
 }
 
 /* Full Width Animation Bar */
@@ -121,8 +125,13 @@ html {
     width: 0px;
   }
 
-  100% {
+  80% {
     width: 100%;
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 

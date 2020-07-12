@@ -23,9 +23,7 @@ const startMovieApp = () => {
       listenMakeFavoriteHeart();
     });
   }
-  listenSearchBar();
-  listenSearchBtn();
-  listenFavoritesBtn();
+  listenMenuBtns();
 };
 
 // helpers
@@ -109,7 +107,35 @@ const showFavorites = () => {
     });
   }
 };
-// listen buttons
+
+const showRandomSelection = () => {
+  console.log('there');
+  idSelection = [];
+  generateRandomSelection(20);
+
+  let mediaSelection = [];
+  for (const id of idSelection) {
+    getApiSeriesById(id).then((data) => {
+      // Check availabily
+      if (data.status !== 404) {
+        mediaSelection.push(data);
+        checkImage(data);
+      }
+      paintSelection(mediaSelection);
+      listenMakeFavoriteHeart();
+    });
+  }
+  listenMenuBtns();
+};
+
+const showProfileMenu = () => {
+  const userMenuEl = document.querySelector('.profile__menu');
+  userMenuEl.classList.toggle('expand');
+  console.log('profile');
+};
+/*****************************
+ *         LISTENERS         *
+ ****************************/
 
 const listenSearchBar = () => {
   const searchInputEl = document.querySelector('.js-search');
@@ -119,21 +145,46 @@ const listenSearchBar = () => {
     }
   });
 };
-
 const listenSearchBtn = () => {
   const searchInputBtnEl = document.querySelector('.js-btn-search');
   searchInputBtnEl.addEventListener('click', searchMedia);
 };
 
-const listenFavoritesBtn = () => {
-  const favoriteBtnEl = document.querySelector('.user-favorites');
-  favoriteBtnEl.addEventListener('click', showFavorites);
-};
 // listen favorites
-
 const listenMakeFavoriteHeart = () => {
   listenEvents('.media__poster-favorite', addToFavorites);
 };
+
+const listenFavoritesBtn = () => {
+  const favoriteBtnEl = document.querySelector('.user-favorites');
+  const favoriteMenuEl = document.querySelector('.js-search__favorites');
+  favoriteBtnEl.addEventListener('click', showFavorites);
+  favoriteMenuEl.addEventListener('click', showFavorites);
+};
+
+const listenMenuBtns = () => {
+  listenSearchBar();
+  listenSearchBtn();
+  listenFavoritesBtn();
+  listenSeriesBtn();
+  listenProfileBtn();
+};
+
+// listen menu items
+
+const listenSeriesBtn = () => {
+  const seriesMenuEl = document.querySelector('.js-search__series');
+  seriesMenuEl.addEventListener('click', showRandomSelection);
+};
+
+const listenProfileBtn = () => {
+  const userMenuEl = document.querySelector('.js-user-profile');
+  userMenuEl.addEventListener('click', showProfileMenu);
+};
+
+/*****************************
+ *        PAINT HTML         *
+ ****************************/
 
 // Paint random Selection
 const paintSelection = (media) => {

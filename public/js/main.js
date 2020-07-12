@@ -101,20 +101,23 @@ const paintRequestInfo = () => {
 
 const getRequestInfoHtmlCode = (url) => {
   let htmlCode = '';
-  htmlCode += `<h1>Hello</h1>`;
+  htmlCode += `<div class="welcome__container">`;
+  htmlCode += `<h1 class="welcome-title welcome-request">Hello</h1>`;
   htmlCode += `<div class="request__info--area">`;
-  htmlCode += `   <h2>What's your name?</h2>`;
-  htmlCode += `   <input type="text" name="name" class="request__info-name js-user-name" autocomplete="off">`;
+  htmlCode += `   <h2 class="request__info-title">What's your name?</h2>`;
+  htmlCode += `     <input type="text" name="name" class="request__info-name js-user-name" autocomplete="off" placeholder="ELENA">`;
+  htmlCode += `   <div class="input-highlight"></div>`;
   htmlCode += `   <div class="request__info--avatar">`;
   htmlCode += `       <div class="avatar__container">`;
   htmlCode += `           <img src="${url}" alt="avatar image" class="avatar">`;
   htmlCode += `      </div>`;
   htmlCode += `      <p class="avatar-description">`;
-  htmlCode += `           <span class="js-not-happy">Not happy?</span>`;
+  htmlCode += `           <span class="js-not-happy not-happy">Not happy ?</span>`;
   htmlCode += `           <i class="fas fa-sync-alt js-refresh-avatar refresh-avatar"></i>`;
-  htmlCode += `           <span class="js-happy">Happy?</span>`;
+  htmlCode += `           <span class="js-happy happy">Happy ?</span>`;
   htmlCode += `      </p>`;
   htmlCode += `   </div>`;
+  htmlCode += `</div>`;
   htmlCode += `</div>`;
   return htmlCode;
 };
@@ -130,13 +133,14 @@ const paintWelcome = () => {
 
 const getWelcomeHtmlCode = () => {
   let htmlCode = '';
-  htmlCode += `<h1>Hello, ${user.name}</h1>`;
+  htmlCode += `<div class="welcome__container">`;
+  htmlCode += `     <h1 class="welcome-title">Hello, <span class="name">${user.name}</span></h1>`;
   htmlCode += `     <div class="avatar__container">`;
   htmlCode += `           <img src="${user.avatar}" alt="avatar image" class="avatar fade-in">`;
   htmlCode += `     </div>`;
   htmlCode += `     <p class="quote fade-in js-quote"></p>`;
-  htmlCode += `   </div>`;
   htmlCode += `</div>`;
+  htmlCode += `<span class="enter-message">Press any key <i class="fas fa-chevron-circle-right"></i></span>`;
   return htmlCode;
 };
 

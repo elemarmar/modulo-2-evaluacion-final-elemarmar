@@ -19,10 +19,10 @@
           <div class="search-wrapper search__movies">
             <span class="search-item">Movies</span>
           </div>
-          <div class="search-wrapper search__series">
+          <div class="search-wrapper js-search__series">
             <span class="search-item">Series</span>
           </div>
-          <div class="search-wrapper search__favorites">
+          <div class="search-wrapper js-search__favorites">
             <span class="search-item">Favorites</span>
           </div>
           <div class="search-wrapper search__genre">
@@ -39,44 +39,45 @@
           <li class="timer"><i class="fas fa-stopwatch menu-icon"></i></li>
           <li class="user-lists"><i class="fas fa-list-ul menu-icon"></i></li>
           <li class="user-favorites"><i class="fas fa-heart menu-icon"></i></li>
-          <li class="user-profile">
+          <li class="user-profile js-user-profile">
             <div class="user-avatar"></div>
           </li>
         </ul>
       </nav>
     </header>
-    <main class="movie-selection__area js-selection-area">
-      <div class="media__container">
-        <div
-          class="media__poster"
-          style="
-            background-image: url('http://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg');
-          "
-        >
-          <div class="media__poster-check">
-            <span class="media__poster-seen"><i class="far fa-eye"></i></span>
-            <span class="media__poster-favorite"
-              ><i class="fas fa-heart"></i
-            ></span>
+    <main class="">
+      <section class="movie-selection__area js-selection-area">
+        <div class="media__container">
+          <div
+            class="media__poster"
+            style="
+              background-image: url('http://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg');
+            "
+          >
+            <div class="media__poster-check">
+              <span class="media__poster-seen"><i class="far fa-eye"></i></span>
+              <span class="media__poster-favorite"
+                ><i class="fas fa-heart"></i
+              ></span>
+            </div>
+            <div class="media__poster-rating">
+              <span class="media__poster-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+              </span>
+              <span class="media__poster-score">4.10</span>
+            </div>
           </div>
-          <div class="media__poster-rating">
-            <span class="media__poster-stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </span>
-            <span class="media__poster-score">4.10</span>
+          <div class="media__simple-info">
+            <h4 class="media__poster-title">Frozen II</h4>
+            <p class="media__poster-eyar">2019</p>
           </div>
         </div>
-        <div class="media__simple-info">
-          <h4 class="media__poster-title">Frozen II</h4>
-          <p class="media__poster-eyar">2019</p>
-        </div>
-      </div>
-
-      <!-- <div class="init-expand"></div> -->
+      </section>
+      <div class="init-expand"></div>
 
       <!-- <div>
         <div class="cover">
@@ -115,6 +116,31 @@
           year
         </p>
       </div> -->
+      <section class="profile__menu">
+        <div class="avatar"></div>
+        <h2 class="profile-name">Elena</h2>
+        <div class="">
+          <ul class="profile__info">
+            <li class="profile__section series">
+              <span class="percentage">52%</span>
+              <span class="">Series watched: 23</span>
+            </li>
+            <li class="profile__section movies">
+              <span class="percentage">52%</span>
+              <span class="">Movies watched: 23</span>
+            </li>
+            <li class="profile__section heart">
+              <span class="percentage">52%</span>
+              <span class="">Favorite items: 23</span>
+            </li>
+          </ul>
+        </div>
+        <ul class="my-lists">
+          <li>List 1</li>
+          <li>List 1</li>
+          <li>List 1</li>
+        </ul>
+      </section>
     </main>
     <footer></footer>
     <script src="./public/js/main2.js"></script>
