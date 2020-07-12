@@ -3,29 +3,31 @@
 /*****************************
  *        MAKE JSON          *
  ****************************/
-
+// Random min max
 // Crear array
 let seriesGenresId = [];
 
-// generate selection (ALL movies)
-generateRandomSelection(20);
+const makeit = () => {
+  // generate selection (ALL movies)
+  generateRandomSelection(100);
 
-// for loop
-for (const id of idSelection) {
-  getApiSeriesById(id).then((data) => {
-    // Check availabily
-    if (data.status !== 404) {
-      const series = {};
-      series.id = data.id;
-      series.genre = data.genres;
-      seriesGenresId.push(series);
+  // for loop
+
+  setTimeout(function () {
+    for (const id of idSelection) {
+      getApiSeriesById(id).then((data) => {
+        console.log(data.name);
+        // Check availabily
+        if (data.status !== 404) {
+          const series = {};
+          series.id = data.id;
+          series.genre = data.genres;
+          seriesGenresId.push(series);
+        }
+      });
     }
-  });
-}
+  }, 2000);
 
-const myJson = JSON.stringify(seriesGenresId);
-console.log(seriesGenresId);
-
-fs.writeFile('series-genre.json', myJson, function (err, result) {
-  if (err) console.log('error', err);
-});
+  const myJson = JSON.stringify(seriesGenresId);
+  console.log(seriesGenresId);
+};
