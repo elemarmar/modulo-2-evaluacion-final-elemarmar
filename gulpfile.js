@@ -21,19 +21,17 @@ function style() {
 }
 
 // scripts
-var jsFiles = './src/js/*.js',
+var jsFiles = './src/js/**/*.js',
   jsDest = './public/js';
 
 function scripts() {
   return gulp
     .src(jsFiles)
-    .pipe(
-      concat('scripts.js')
-        .pipe(gulp.dest(jsDest))
-        .pipe(rename('scripts.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(jsDest))
-    );
+    .pipe(concat('scripts.js'))
+    .pipe(gulp.dest(jsDest))
+    .pipe(rename('scripts.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest(jsDest));
 }
 
 function watch() {
@@ -43,6 +41,7 @@ function watch() {
     },
   });
   gulp.watch('./src/scss/**/*.scss', style);
+  gulp.watch(jsFiles, scripts);
   gulp.watch('./*.html').on('change', browserSync.reload);
   gulp.watch('./public/js/*.js').on('change', browserSync.reload);
 }

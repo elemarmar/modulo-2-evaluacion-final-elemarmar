@@ -110,7 +110,7 @@ html {
   background: #2187e7;
   position: fixed;
   top: 63px;
-  z-index: 100;
+  z-index: 500;
   box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
   animation: fullexpand 6s ease-out;
   //   -moz-animation: fullexpand 10s ease-out;
@@ -213,8 +213,8 @@ html {
     color: salmon;
   }
 
-  .make-watch-eye:hover {
-    color: #2d72d9;
+  .fa-eye:hover {
+    color: #2d72d9 !important;
   }
 
   .media__poster-rating {

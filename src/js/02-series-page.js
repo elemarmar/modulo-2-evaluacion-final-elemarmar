@@ -1,10 +1,12 @@
 'use strict';
 
 // global data
+let section = '';
 let mediaType = '';
 let idSelection = [];
 let favoriteSeries = [];
 let favoriteMovies = [];
+let watchedSeries = [];
 const genreList = [
   'Action',
   'Adult',
@@ -37,6 +39,8 @@ const genreList = [
 
 // Starting the app
 const startMovieApp = () => {
+  removeWelcomePage();
+  initializeLoadBar();
   mediaType = 'series';
   // recuperar datos localstorage: global data
   generateRandomSelection(20);
@@ -50,15 +54,12 @@ const startMovieApp = () => {
       }
       paintSelection(mediaSelection);
       listenMakeFavoriteHeart();
+      listenMakeWatchedEye();
     });
   }
   paintDropDownGenres(genreList);
+  paintProfile();
   listenMenuBtns();
-};
-
-// helpers
-const randomNumber = (max) => {
-  return Math.floor(Math.random() * max);
 };
 
 const generateRandomSelection = (items) => {
@@ -86,44 +87,14 @@ const searchMedia = () => {
   });
 };
 
-function checkImage(result) {
-  if (!result.image) {
-    const avatar = JSON.parse(localStorage.getItem('userDataLog')).avatar;
-    console.log(avatar);
-    result.image = avatar.replace(
-      'smile',
-      'concerned&options[style]=circle&options[eyes][]=surprised&options[b]=%23900'
-    );
-  } else {
-    result.image = result.image.medium;
-  }
-}
+// const updateFavoriteSection = (ev) => {
+//   listenMakeFavoriteHeart();
+//   const id = getClickedMediaId(ev);
 
-const getClickedMediaId = (ev) => {
-  return ev.target.dataset.id;
-};
-
-const addToFavorites = (ev) => {
-  const id = getClickedMediaId(ev);
-  // delete if already there
-  if (isMediaInFavorites(id)) {
-    const indexFound = favoriteSeries.findIndex((element) => element === id);
-    favoriteSeries.splice(indexFound, 1);
-    // add to favorites
-  } else {
-    favoriteSeries.push(id);
-    const heart = document.querySelector(`[data-id="${id}"]`);
-    heart.style.color = 'red';
-  }
-
-  console.log(favoriteSeries);
-};
-
-const isMediaInFavorites = (id) => {
-  return !!favoriteSeries.find((element) => element === id);
-};
-
+// };
 const showFavorites = () => {
+  section = 'Favorites';
+  console.log('Section: ' + section);
   let mediaSelection = [];
   for (const id of favoriteSeries) {
     getApiSeriesById(id).then((data) => {
@@ -134,11 +105,17 @@ const showFavorites = () => {
       }
       paintSelection(mediaSelection);
       listenMakeFavoriteHeart();
+      const hearts = document.querySelectorAll('.make-favorite-heart');
+      for (const heart of hearts) {
+        heart.classList.add('favorite-heart');
+      }
     });
   }
 };
 
 const showRandomSelection = () => {
+  section = 'Series';
+  console.log(section);
   console.log('there');
   idSelection = [];
   generateRandomSelection(20);
@@ -237,6 +214,7 @@ const listenMenuBtns = () => {
   listenSearchBar();
   //   listenSearchBtn();
   listenFavoritesBtn();
+  listenWatchedBtn();
   listenSeriesBtn();
   listenProfileBtn();
   listenGenresBtn();
@@ -311,22 +289,34 @@ const paintSelection = (media) => {
 
 const getSelectionHtmlCode = (media) => {
   let htmlCode = '';
-  htmlCode += `<div class="media__container">`;
-  htmlCode += `   <div class="media__poster" style="background-image: url('${media.image}');">`;
+  htmlCode += `<article class="media__container" data-id="${media.id}">`;
+  htmlCode += `<div div class="cover" style="background-image: url('${media.image}')"> `;
+  htmlCode += `<div class="cover-imgs" ></div>`;
+  htmlCode += `<div class="cover-overlay cover-info-overlay">`;
   htmlCode += `<div class="media__poster-check">`;
-  htmlCode += `<span class="media__poster-seen"><i class="far fa-eye"></i></span>`;
-  htmlCode += `<span class="media__poster-favorite"><i class="fas fa-heart make-favorite-heart" data-id="${media.id}"></i></span>`;
+  htmlCode += `<span class="media__poster-seen">`;
+  htmlCode += `<i class="far fa-eye make-watched-eye" data-id="${media.id}"></i></span>`;
+  htmlCode += `<span class="media__poster-favorite">`;
+  htmlCode += `<i class="fas fa-heart  make-favorite-heart" data-id="${media.id}"></i>`;
+  htmlCode += `</span>`;
   htmlCode += `</div>`;
   htmlCode += `<div class="media__poster-rating">`;
-  htmlCode += `<span class="media__poster-stars"><i class="fas fa-star"></i></span>`;
-  htmlCode += `<span class="media__poster-score">4.10</span>`;
-  htmlCode += ` </div>`;
+  htmlCode += `<span class="media__poster-stars">`;
+  htmlCode += ` <i class="fas fa-star"></i>`;
+  htmlCode += `<i class="fas fa-star"></i>`;
+  htmlCode += `<i class="fas fa-star"></i>`;
+  htmlCode += `<i class="fas fa-star"></i>`;
+  htmlCode += `<i class="far fa-star"></i>`;
+  htmlCode += `</span>`;
+  htmlCode += `<span class="media__poster-score">${media.rating.average}</span>`;
+  htmlCode += `</div>`;
+  htmlCode += `</div>`;
   htmlCode += `</div>`;
   htmlCode += `<div class="media__simple-info">`;
   htmlCode += `<h4 class="media__poster-title">${media.name}</h4>`;
-  htmlCode += `<p class="media__poster-eyar">2019</p>`;
+  htmlCode += `<p class="media__poster-year">${media.premiered}</p>`;
   htmlCode += `</div>`;
-  htmlCode += `</div>`;
+  htmlCode += `</article>`;
   return htmlCode;
 };
 
@@ -357,5 +347,12 @@ const listenEvents = (selector, handler, eventType = 'click') => {
   }
 };
 
-// start app
-startMovieApp();
+const initializeLoadBar = () => {
+  const loadingBar = document.querySelector('.js-load-bar');
+  loadingBar.classList.add('init-expand');
+};
+
+const removeWelcomePage = () => {
+  const welcomePage = document.querySelector('.welcome__area');
+  welcomePage.remove();
+};

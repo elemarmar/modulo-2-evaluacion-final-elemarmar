@@ -6,7 +6,7 @@ let avatarUrl = '';
 let movieQuotes = '';
 
 // start app
-const startApp = () => {
+const startWelcomeApp = () => {
   getFromLocalStorage();
   if (user.name) {
     showWelcomePage();
@@ -41,7 +41,8 @@ const randomNumber = (max) => {
 };
 
 const takeToWebsite = () => {
-  window.location.href = './app.html';
+  // start app
+  startMovieApp();
 };
 
 const fadeOut = () => {
@@ -178,4 +179,4 @@ const setInLocalStorage = () => {
 
 // start app
 
-startApp();
+startWelcomeApp();

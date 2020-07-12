@@ -71,6 +71,8 @@
 
 //////////
 .search {
+  margin-bottom: -5px;
+
   &:before {
     content: '\f002';
     font-family: 'Font Awesome 5 Free';
@@ -79,7 +81,7 @@
     transition: color 0.5s;
     color: $FilterBarIcon;
     position: absolute;
-    top: 5px;
+    top: 8px;
     left: 7px;
     z-index: 2;
     font-size: 20px;
