@@ -55,6 +55,7 @@ const takeToWebsite = () => {
 const fadeOut = () => {
   const page = document.querySelector('.welcome__area');
   page.classList.add('fade-out');
+  document.removeEventListener('keydown', fadeOut); // STOP listening for keys in the document!
   const temp = setTimeout(takeToWebsite, 3000);
 };
 
