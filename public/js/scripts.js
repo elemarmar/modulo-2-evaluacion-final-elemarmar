@@ -1,14 +1,23 @@
 'use strict';
 
-// global data
+/*************************
+ *      Global data      *
+ *************************/
 let user = {};
 let avatarUrl = '';
 let movieQuotes = '';
 
-// start app
+/*************************
+ *   start welcome app   *
+ *************************/
 const startWelcomeApp = () => {
   getFromLocalStorage();
-  if (user.name) {
+  console.log(user);
+  console.log(user.lastLogin);
+  if (user.lastLogin === whatDayIsToday()) {
+    console.log('delete');
+    takeToWebsite();
+  } else if (user.name) {
     showWelcomePage();
   } else {
     getApiData(randomString()).then(() => {
@@ -20,38 +29,39 @@ const startWelcomeApp = () => {
   }
 };
 
-// helpers
 const showWelcomePage = () => {
   paintWelcome();
   getApiQuotes();
   listenKeyEnd();
 };
 
+/*************************
+ *        helpers        *
+ *************************/
+
 const randomizeAvatar = () => {
   const newAvatar = randomString();
   paintAvatar(newAvatar);
 };
 
-const randomString = () => {
-  return Math.random().toString(36).substr(2, 5);
-};
-
-const randomNumber = (max) => {
-  return Math.floor(Math.random() * max);
-};
-
+// start series app
 const takeToWebsite = () => {
-  // start app
-  startMovieApp();
+  setlastLogin();
+  setInLocalStorage();
+  startSeriesApp();
 };
 
+// welcome page fades
 const fadeOut = () => {
   const page = document.querySelector('.welcome__area');
   page.classList.add('fade-out');
-  const temp = setTimeout(takeToWebsite, 4000);
+  const temp = setTimeout(takeToWebsite, 3000);
 };
 
-// listen events
+/*************************
+ *     listen events     *
+ *************************/
+
 const listenNameInput = () => {
   const inputNameEl = document.querySelector('.request__info-name');
   inputNameEl.addEventListener('keyup', function () {
@@ -66,7 +76,6 @@ const listenNameInput = () => {
 const listenRefreshAvatar = () => {
   const refreshEl = document.querySelector('.refresh-avatar');
   refreshEl.addEventListener('click', randomizeAvatar);
-  setInLocalStorage();
 };
 
 const listenAcceptNameAvatar = () => {
@@ -74,11 +83,34 @@ const listenAcceptNameAvatar = () => {
   happyEl.addEventListener('click', showWelcomePage);
 };
 
+// press any key to load series app
 const listenKeyEnd = () => {
   document.addEventListener('keydown', fadeOut);
 };
 
-// Paint and refresh avatar
+// generate a random string
+
+const randomString = () => {
+  return Math.random().toString(36).substr(2, 5);
+};
+
+// get today's date
+const whatDayIsToday = () => {
+  let today = new Date().toLocaleString().split(',')[0];
+  return today;
+};
+
+// set last login
+const setlastLogin = () => {
+  const today = whatDayIsToday();
+  user['lastLogin'] = today;
+};
+
+/*************************
+ *         paint         *
+ *************************/
+
+// paints avatar
 
 const paintAvatar = (username) => {
   let htmlCode = '';
@@ -91,7 +123,7 @@ const paintAvatar = (username) => {
   });
 };
 
-// Paint Request info message
+// paints message that requests info (1st time)
 
 const paintRequestInfo = () => {
   let requestInfocode = '';
@@ -110,7 +142,7 @@ const getRequestInfoHtmlCode = (url) => {
   htmlCode += `   <div class="input-highlight"></div>`;
   htmlCode += `   <div class="request__info--avatar">`;
   htmlCode += `       <div class="avatar__container">`;
-  htmlCode += `           <img src="${url}" alt="avatar image" class="avatar">`;
+  htmlCode += `           <img src="${url}" alt="avatar image" class="avatar request">`;
   htmlCode += `      </div>`;
   htmlCode += `      <p class="avatar-description">`;
   htmlCode += `           <span class="js-not-happy not-happy">Not happy ?</span>`;
@@ -123,7 +155,7 @@ const getRequestInfoHtmlCode = (url) => {
   return htmlCode;
 };
 
-// Paint Welcome message
+// aints Welcome message
 
 const paintWelcome = () => {
   let welcomeHtmlCode = '';
@@ -137,7 +169,7 @@ const getWelcomeHtmlCode = () => {
   htmlCode += `<div class="welcome__container">`;
   htmlCode += `     <h1 class="welcome-title">Hello, <span class="name">${user.name}</span></h1>`;
   htmlCode += `     <div class="avatar__container">`;
-  htmlCode += `           <img src="${user.avatar}" alt="avatar image" class="avatar fade-in">`;
+  htmlCode += `           <img src="${user.avatar}" alt="" class="avatar welcome fade-in">`;
   htmlCode += `     </div>`;
   htmlCode += `     <p class="quote fade-in js-quote"></p>`;
   htmlCode += `</div>`;
@@ -145,7 +177,11 @@ const getWelcomeHtmlCode = () => {
   return htmlCode;
 };
 
-// api
+/*************************
+ *          API          *
+ *************************/
+
+// get avatars
 
 const getApiData = (string) => {
   return fetch(
@@ -153,6 +189,7 @@ const getApiData = (string) => {
   ).then((data) => (avatarUrl = data.url));
 };
 
+// get quotes (local api)
 const getApiQuotes = () => {
   fetch('./public/api/data.json')
     .then((response) => response.json())
@@ -163,7 +200,9 @@ const getApiQuotes = () => {
     });
 };
 
-// local storage
+/*************************
+ *     local storage     *
+ *************************/
 
 const getFromLocalStorage = () => {
   const localStorageUser = localStorage.getItem('userDataLog');
@@ -177,15 +216,14 @@ const setInLocalStorage = () => {
   localStorage.setItem('userDataLog', stringifyUser);
 };
 
-// start app
-
-startWelcomeApp();
+/********************************************************/
 
 /*************************
  *      HELPERS          *
  *************************/
 
-// Calculate % of watched series
+// Calculate % of watched series / favorite items
+
 const calculatePerctTotalSeries = (array) => {
   const totalNumber = 49146;
   const watchedNumber = array.length;
@@ -193,6 +231,8 @@ const calculatePerctTotalSeries = (array) => {
 
   return result.toFixed(2);
 };
+
+// check if there is image (if not, replace)
 
 function checkImage(result) {
   if (!result.image) {
@@ -207,23 +247,81 @@ function checkImage(result) {
   }
 }
 
+// get id of a clicked item
+
 const getClickedMediaId = (ev) => {
   return ev.target.dataset.id;
 };
+
+// tells if an item is in a list
 
 const isMediaInList = (id, list) => {
   return !!list.find((element) => element === id);
 };
 
+// filters by genre
+
+const filterByGenres = (e) => {
+  section = 'Series';
+  const genreText = document.querySelector('.value.js-filter-genre');
+  const genre = e.target.dataset.genre;
+  console.log('Filter time ' + genre);
+  genreText.innerHTML = genre;
+  let genreSelection = [];
+  let mediaSelection = [];
+  let idSelection = [];
+  getApiSeriesByGenre(genre).then((data) => {
+    // Check by genre
+    for (const item of data) {
+      genreSelection.push(item);
+    }
+    console.log(genreSelection);
+    for (const item of genreSelection) {
+      if (item['genre'].findIndex((element) => element === genre) !== -1) {
+        console.log('contains');
+        idSelection.push(item.id);
+      }
+    }
+    for (let i = 0; i < 20; i++) {
+      getApiSeriesById(idSelection[i]).then((data) => {
+        // Check availabily
+        if (data.status !== 404) {
+          mediaSelection.push(data);
+          checkImage(data);
+        }
+        paintSelection(mediaSelection);
+        listenMakeFavoriteHeart();
+        listenMakeWatchedEye();
+        applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
+        applyClassIfInList(
+          '.make-favorite-heart',
+          favoriteSeries,
+          'favorite-heart'
+        );
+      });
+    }
+  });
+  console.log(genreSelection);
+};
+
+// generate a random number
+
+const randomNumber = (max) => {
+  return Math.floor(Math.random() * max);
+};
+
 'use strict';
 
-// global data
-let section = '';
-let mediaType = '';
+/*************************
+ *      Global data      *
+ *************************/
+
+let section = ''; // tells us in which section we are
 let idSelection = [];
 let favoriteSeries = [];
-let favoriteMovies = [];
 let watchedSeries = [];
+
+// list of genres from TV Maze api
 const genreList = [
   'Action',
   'Adult',
@@ -254,29 +352,27 @@ const genreList = [
   'Western',
 ];
 
+/*************************
+ *   Starting the app    *
+ *************************/
+
 // Starting the app
-const startMovieApp = () => {
+const startSeriesApp = () => {
   removeWelcomePage();
-  initializeLoadBar();
-  mediaType = 'series';
-  // recuperar datos localstorage: global data
-  generateRandomSelection(20);
-  let mediaSelection = [];
-  for (const id of idSelection) {
-    getApiSeriesById(id).then((data) => {
-      // Check availabily
-      if (data.status !== 404) {
-        mediaSelection.push(data);
-        checkImage(data);
-      }
-      paintSelection(mediaSelection);
-      listenMakeFavoriteHeart();
-      listenMakeWatchedEye();
-    });
+  //   debugger;
+  getFromLocalStorage();
+
+  console.log(user);
+  if (user.favoriteSeries) {
+    console.log("It's not empty");
+    favoriteSeries = user.favoriteSeries;
   }
+  showRandomSelection();
   paintDropDownGenres(genreList);
   paintProfile();
   listenMenuBtns();
+  listenDocument();
+  listenErrorBtn();
 };
 
 const generateRandomSelection = (items) => {
@@ -291,6 +387,7 @@ const generateRandomSelection = (items) => {
 };
 
 const searchMedia = () => {
+  section = 'Series';
   const query = document.querySelector('.js-search').value;
   getApiSeriesByName(query).then((data) => {
     const results = data;
@@ -301,19 +398,25 @@ const searchMedia = () => {
       console.log(mediaSelection);
     }
     paintSelection(mediaSelection);
+    listenMakeFavoriteHeart();
+    listenMakeWatchedEye();
+    applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
+    applyClassIfInList(
+      '.make-favorite-heart',
+      favoriteSeries,
+      'favorite-heart'
+    );
   });
 };
 
-// const updateFavoriteSection = (ev) => {
-//   listenMakeFavoriteHeart();
-//   const id = getClickedMediaId(ev);
-
-// };
-const showFavorites = () => {
-  section = 'Favorites';
-  console.log('Section: ' + section);
+const showRandomSelection = () => {
+  section = 'Series';
+  idSelection = [];
+  changeGenreToAll();
+  generateRandomSelection(50);
+  initializeLoadBar();
   let mediaSelection = [];
-  for (const id of favoriteSeries) {
+  for (const id of idSelection) {
     getApiSeriesById(id).then((data) => {
       // Check availabily
       if (data.status !== 404) {
@@ -322,45 +425,71 @@ const showFavorites = () => {
       }
       paintSelection(mediaSelection);
       listenMakeFavoriteHeart();
-      const hearts = document.querySelectorAll('.make-favorite-heart');
-      for (const heart of hearts) {
-        heart.classList.add('favorite-heart');
-      }
+      listenMakeWatchedEye();
     });
   }
-};
+  applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
 
-const showRandomSelection = () => {
-  section = 'Series';
-  console.log(section);
-  console.log('there');
-  idSelection = [];
-  generateRandomSelection(20);
-
-  let mediaSelection = [];
-  for (const id of idSelection) {
-    getApiSeriesById(id)
-      .then((data) => {
-        // Check availabily
-        if (data.status !== 404) {
-          mediaSelection.push(data);
-          checkImage(data);
-        }
-        paintSelection(mediaSelection);
-      })
-      .then(listenMakeFavoriteHeart());
-  }
+  applyClassIfInList('.make-favorite-heart', favoriteSeries, 'favorite-heart');
   listenMenuBtns();
+  listenDocument();
 };
 
-const showProfileMenu = () => {
-  const userMenuEl = document.querySelector('.profile__menu');
-  userMenuEl.classList.toggle('expand');
-  console.log('profile');
+const showDropMenu = () => {
+  const genresBtn = document.querySelector('.dropdown-menu');
+  genresBtn.classList.toggle('hidden');
 };
+
+const closeMenus = (e) => {
+  const genresBtn = document.querySelector('.dropdown-menu');
+  if (
+    !e.target.classList.contains('js-filter-genre') &&
+    !genresBtn.classList.contains('hidden')
+  ) {
+    genresBtn.classList.add('hidden');
+  }
+};
+
+const initializeLoadBar = () => {
+  const loadingBar = document.querySelector('.js-load-bar');
+  loadingBar.classList.add('init-expand');
+  setTimeout(function () {
+    loadingBar.classList.remove('init-expand');
+  }, 6500);
+};
+
+const removeWelcomePage = () => {
+  const welcomePage = document.querySelector('.welcome__area');
+  welcomePage.remove();
+};
+
+// change genre to All
+const changeGenreToAll = () => {
+  const genreText = document.querySelector('.value.js-filter-genre');
+  genreText.innerHTML = 'All';
+};
+
 /*****************************
  *         LISTENERS         *
  ****************************/
+
+// helper for multiple btns
+const listenEvents = (selector, handler, eventType = 'click') => {
+  const elements = document.querySelectorAll(selector);
+  for (const element of elements) {
+    element.addEventListener(eventType, handler);
+  }
+};
+
+const listenMenuBtns = () => {
+  listenSearchBar();
+  listenFavoritesBtn();
+  listenWatchedBtn();
+  listenSeriesBtn();
+  listenProfileBtn();
+  listenGenresBtn();
+  listenGenres();
+};
 
 const listenSearchBar = () => {
   const searchInputEl = document.querySelector('.js-search');
@@ -371,48 +500,9 @@ const listenSearchBar = () => {
     }
   });
 };
-// const listenSearchBtn = () => {
-//   const searchInputBtnEl = document.querySelector('.js-btn-search');
-//   searchInputBtnEl.addEventListener('click', searchMedia);
-// };
 
 const listenGenres = () => {
   listenEvents('.js-genre-option', filterByGenres);
-};
-
-const filterByGenres = (e) => {
-  const genreText = document.querySelector('.value.js-filter-genre');
-  const genre = e.target.dataset.genre;
-  console.log('Filter time ' + genre);
-  genreText.innerHTML = genre;
-  let genreSelection = [];
-  let mediaSelection = [];
-  let idSelection = [];
-  getApiSeriesByGenre(genre).then((data) => {
-    // Check by genre
-    for (const item of data) {
-      genreSelection.push(item);
-    }
-    console.log(genreSelection);
-    for (const item of genreSelection) {
-      if (item['genre'].findIndex((element) => element === genre) !== -1) {
-        console.log('contains');
-        idSelection.push(item.id);
-      }
-    }
-    for (let i = 0; i < 20; i++) {
-      getApiSeriesById(idSelection[i]).then((data) => {
-        // Check availabily
-        if (data.status !== 404) {
-          mediaSelection.push(data);
-          checkImage(data);
-        }
-        paintSelection(mediaSelection);
-        listenMakeFavoriteHeart();
-      });
-    }
-  });
-  console.log(genreSelection);
 };
 
 // listen favorites
@@ -427,19 +517,7 @@ const listenFavoritesBtn = () => {
   favoriteMenuEl.addEventListener('click', showFavorites);
 };
 
-const listenMenuBtns = () => {
-  listenSearchBar();
-  //   listenSearchBtn();
-  listenFavoritesBtn();
-  listenWatchedBtn();
-  listenSeriesBtn();
-  listenProfileBtn();
-  listenGenresBtn();
-  listenGenres();
-};
-
 // listen menu items
-
 const listenSeriesBtn = () => {
   const seriesMenuEl = document.querySelector('.js-search__series');
   seriesMenuEl.addEventListener('click', showRandomSelection);
@@ -451,35 +529,22 @@ const listenProfileBtn = () => {
 };
 
 // Listen genre menu
-
 const listenGenresBtn = () => {
   const genresBtn = document.querySelector('.filter.genres');
   genresBtn.addEventListener('click', showDropMenu);
 };
 
-const showDropMenu = () => {
-  const genresBtn = document.querySelector('.dropdown-menu');
-  genresBtn.classList.toggle('hidden');
-};
-
+// listens clicks on document --> for escaping drop-down menu
 const listenDocument = () => {
   document.addEventListener('click', closeMenus);
 };
 
-const closeMenus = (e) => {
-  const genresBtn = document.querySelector('.dropdown-menu');
-  if (
-    !e.target.classList.contains('js-filter-genre') &&
-    !genresBtn.classList.contains('hidden')
-  ) {
-    genresBtn.classList.add('hidden');
-  }
-};
-listenDocument();
 /*****************************
  *        PAINT HTML         *
  ****************************/
-// Paint Drop down menu (genres)
+
+// genres drop down menu
+
 const paintDropDownGenres = (array) => {
   const dropDownEl = document.querySelector('.dropdown-menu');
   dropDownEl.innerHTML = '';
@@ -495,7 +560,9 @@ const getDropDownHtmlCode = (genre) => {
   htmlCode += `</li>`;
   return htmlCode;
 };
-// Paint random Selection
+
+// a random selection
+
 const paintSelection = (media) => {
   const selectionAreaEl = document.querySelector('.js-selection-area');
   selectionAreaEl.innerHTML = '';
@@ -537,7 +604,9 @@ const getSelectionHtmlCode = (media) => {
   return htmlCode;
 };
 
-// get api
+/*************************
+ *          API          *
+ *************************/
 
 const getApiSeriesById = (id) => {
   return fetch(`//api.tvmaze.com/shows/${id}`).then((response) =>
@@ -555,24 +624,7 @@ const getApiSeriesByGenre = () => {
   return fetch(`./public/api/genres.json`).then((response) => response.json());
 };
 
-// events
-
-const listenEvents = (selector, handler, eventType = 'click') => {
-  const elements = document.querySelectorAll(selector);
-  for (const element of elements) {
-    element.addEventListener(eventType, handler);
-  }
-};
-
-const initializeLoadBar = () => {
-  const loadingBar = document.querySelector('.js-load-bar');
-  loadingBar.classList.add('init-expand');
-};
-
-const removeWelcomePage = () => {
-  const welcomePage = document.querySelector('.welcome__area');
-  welcomePage.remove();
-};
+// add / delete from favorites
 
 const addToFavorites = (ev) => {
   console.log('ENter');
@@ -585,6 +637,8 @@ const addToFavorites = (ev) => {
     const mediaToDelete = document.querySelector(`[data-id="${id}"]`);
     const indexFound = favoriteSeries.findIndex((element) => element === id);
     favoriteSeries.splice(indexFound, 1);
+    user['favoriteSeries'] = favoriteSeries;
+    setInLocalStorage();
     heart.classList.remove('favorite-heart');
     mediaToDelete.style.display = 'none';
 
@@ -593,15 +647,50 @@ const addToFavorites = (ev) => {
     if (isMediaInList(id, favoriteSeries)) {
       const indexFound = favoriteSeries.findIndex((element) => element === id);
       favoriteSeries.splice(indexFound, 1);
+      user['favoriteSeries'] = favoriteSeries;
+      setInLocalStorage();
       heart.classList.remove('favorite-heart');
       // add to favorites
     } else {
       favoriteSeries.push(id);
+      user['favoriteSeries'] = favoriteSeries;
+      setInLocalStorage();
       heart.classList.add('favorite-heart');
     }
   }
   paintProfile();
   console.log(favoriteSeries);
+};
+
+// show favorites section
+const showFavorites = () => {
+  if (section !== 'Favorites' && favoriteSeries.length !== 0) {
+    section = 'Favorites';
+    changeGenreToAll();
+    console.log('Section: ' + section);
+    let mediaSelection = [];
+    for (const id of favoriteSeries) {
+      getApiSeriesById(id).then((data) => {
+        // Check availabily
+        if (data.status !== 404) {
+          mediaSelection.push(data);
+          checkImage(data);
+        }
+        paintSelection(mediaSelection);
+        listenMakeFavoriteHeart();
+        listenMakeWatchedEye();
+        applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
+        applyClassIfInList(
+          '.make-favorite-heart',
+          favoriteSeries,
+          'favorite-heart'
+        );
+        //   for (const heart of hearts) {
+        //     heart.classList.add('favorite-heart');
+        //   }
+      });
+    }
+  }
 };
 
 /*****************************
@@ -630,6 +719,7 @@ const listenWatchedBtn = () => {
 const addToWatched = (ev) => {
   const id = getClickedMediaId(ev);
   const eye = document.querySelector(`.make-watched-eye[data-id="${id}"]`);
+  console.log(eye);
   // delete if already there
 
   if (section === 'Watched') {
@@ -637,16 +727,22 @@ const addToWatched = (ev) => {
     const mediaToDelete = document.querySelector(`[data-id="${id}"]`);
     const indexFound = watchedSeries.findIndex((element) => element === id);
     watchedSeries.splice(indexFound, 1);
+    user['watchedSeries'] = watchedSeries;
+    setInLocalStorage();
     eye.classList.remove('watched-eye');
     mediaToDelete.style.display = 'none';
   } else {
     if (isMediaInList(id, watchedSeries)) {
       const indexFound = watchedSeries.findIndex((element) => element === id);
       watchedSeries.splice(indexFound, 1);
+      user['watchedSeries'] = watchedSeries;
+      setInLocalStorage();
       eye.classList.remove('watched-eye');
       // add to favorites
     } else {
       watchedSeries.push(id);
+      user['watchedSeries'] = watchedSeries;
+      setInLocalStorage();
       eye.classList.add('watched-eye');
     }
   }
@@ -657,39 +753,73 @@ const addToWatched = (ev) => {
 // show watched series
 
 const showWatched = () => {
-  section = 'Watched';
-  console.log('Section: ' + section);
-  let mediaSelection = [];
-  for (const id of watchedSeries) {
-    getApiSeriesById(id).then((data) => {
-      // Check availabily
-      if (data.status !== 404) {
-        mediaSelection.push(data);
-        checkImage(data);
-      }
-      paintSelection(mediaSelection);
-      listenMakeWatchedEye();
-      const eyes = document.querySelectorAll('.make-watched-eye');
-      for (const eye of eyes) {
-        eye.classList.add('watched-eye');
-      }
-    });
+  if (section !== 'Watched' && watchedSeries.length !== 0) {
+    section = 'Watched';
+    changeGenreToAll();
+    console.log('Section: ' + section);
+    let mediaSelection = [];
+    for (const id of watchedSeries) {
+      getApiSeriesById(id).then((data) => {
+        // Check availabily
+        if (data.status !== 404) {
+          mediaSelection.push(data);
+          checkImage(data);
+        }
+        paintSelection(mediaSelection);
+        listenMakeWatchedEye();
+        listenMakeFavoriteHeart();
+        applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
+
+        applyClassIfInList(
+          '.make-favorite-heart',
+          favoriteSeries,
+          'favorite-heart'
+        );
+
+        //   const eyes = document.querySelectorAll('.make-watched-eye');
+        //   for (const eye of eyes) {
+        //     eye.classList.add('watched-eye');
+        //   }
+      });
+    }
   }
 };
 
-// pintar contenidos del menú (ARRANCAR)
-// actualizar según vemos pelis / añadimos favoritos (UPDATE)
+// apply class if element is in a list
+const applyClassIfInList = (selector, list, classToApply) => {
+  const elements = document.querySelectorAll(selector);
+  for (const element of elements) {
+    const id = element.dataset.id;
+    if (isMediaInList(id, list)) {
+      element.classList.add(classToApply);
+    }
+  }
+};
+
+// show profile menu
+
+const showProfileMenu = () => {
+  const userMenuEl = document.querySelector('.profile__menu');
+  userMenuEl.classList.toggle('expand');
+  console.log('profile');
+};
+
+/*************************
+ *     paint profile     *
+ *************************/
 
 const paintProfile = () => {
   const profileAreaEl = document.querySelector('.js-profile-menu');
   profileAreaEl.innerHTML = '';
   profileAreaEl.innerHTML = getProfileHtmlCode();
+  const userMenuAvatarEl = document.querySelector('.user-profile');
+  userMenuAvatarEl.style.backgroundImage = `url('${user.avatar}')`;
 };
 
 const getProfileHtmlCode = () => {
   let htmlCode = '';
-  htmlCode += `<div class="avatar"></div>`;
-  htmlCode += `<h2 class="profile-name">Elena</h2>`;
+  htmlCode += `<div class="avatar" style="background-image: url('${user.avatar}')"></div>`;
+  htmlCode += `<h2 class="profile-name">${user.name}</h2>`;
   htmlCode += `<div class="">`;
   htmlCode += `  <ul class="profile__info">`;
   htmlCode += `    <li class="profile__section series">`;
@@ -712,13 +842,17 @@ const getProfileHtmlCode = () => {
   htmlCode += `</div>`;
 
   htmlCode += `<div class="copyright">`;
+  htmlCode += `<div class="creator-avatar"></div>`;
+  htmlCode += `<h3 class="about-me">About me</h3>`;
   htmlCode += ` <p class="author-message">`;
   htmlCode += `   Apart from movies I also love`;
   htmlCode += `   <span class="keyword">programming</span> and`;
   htmlCode += `   <span class="keyword">learning languages!</span>`;
   htmlCode += ` </p>`;
-  htmlCode += `  <p>`;
-  htmlCode += `   Checkout my Github page for more`;
+  htmlCode += `  <p >`;
+  htmlCode += `   Checkout my Github page for more:`;
+  htmlCode += `</p>`;
+  htmlCode += `<p class="github-info">`;
   htmlCode += `   <a class="github-link" href="https://github.com/elemarmar" target="_blank">`;
   htmlCode += `<i class="fab fa-github-alt"></i> Elemarmar 🦊`;
   htmlCode += `</a>`;
@@ -726,4 +860,39 @@ const getProfileHtmlCode = () => {
   htmlCode += `</div>`;
 
   return htmlCode;
+};
+
+// Mostrar mensaje de próxima feature
+
+const listenErrorBtn = () => {
+  const moviesBtnEl = document.querySelector('.search__movies');
+  const listsBtnEl = document.querySelector('.user-lists');
+  moviesBtnEl.addEventListener('click', showErrorMessage);
+  listsBtnEl.addEventListener('click', showErrorMessage);
+};
+
+const showErrorMessage = () => {
+  section = 'Error';
+  const selectionArea = document.querySelector('.js-selection-area');
+  selectionArea.innerHTML = '';
+  let codeHTML = '';
+  codeHTML += `<div class="error__container">`;
+  codeHTML += '<h2 class="error-title">Ups ! </h2>';
+  codeHTML +=
+    '<p class="error-text">This feature is currently unavailable but will come out very soon. Stay tuned!</p>';
+  codeHTML += `<div class="error-avatar" style="background-image: url('https://avatars.dicebear.com/api/avataaars/i1xim.svg?options[mouth][]=sad&options[style]=circle&options[eyes][]=roll&options[b]=%23900')"></div>`;
+  codeHTML += `</div>`;
+  selectionArea.innerHTML = codeHTML;
+};
+
+// start app
+
+startWelcomeApp();
+
+
+// Si el rating es null, no mostrarlo
+// Mostrar número de stars en función de la nota
+
+const checkRating = (result) => {
+if (!result.rating.average)
 };

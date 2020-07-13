@@ -1,12 +1,15 @@
 'use strict';
 
-// global data
-let section = '';
-let mediaType = '';
+/*************************
+ *      Global data      *
+ *************************/
+
+let section = ''; // tells us in which section we are
 let idSelection = [];
 let favoriteSeries = [];
-let favoriteMovies = [];
 let watchedSeries = [];
+
+// list of genres from TV Maze api
 const genreList = [
   'Action',
   'Adult',
@@ -37,29 +40,27 @@ const genreList = [
   'Western',
 ];
 
+/*************************
+ *   Starting the app    *
+ *************************/
+
 // Starting the app
-const startMovieApp = () => {
+const startSeriesApp = () => {
   removeWelcomePage();
-  initializeLoadBar();
-  mediaType = 'series';
-  // recuperar datos localstorage: global data
-  generateRandomSelection(20);
-  let mediaSelection = [];
-  for (const id of idSelection) {
-    getApiSeriesById(id).then((data) => {
-      // Check availabily
-      if (data.status !== 404) {
-        mediaSelection.push(data);
-        checkImage(data);
-      }
-      paintSelection(mediaSelection);
-      listenMakeFavoriteHeart();
-      listenMakeWatchedEye();
-    });
+  //   debugger;
+  getFromLocalStorage();
+
+  console.log(user);
+  if (user.favoriteSeries) {
+    console.log("It's not empty");
+    favoriteSeries = user.favoriteSeries;
   }
+  showRandomSelection();
   paintDropDownGenres(genreList);
   paintProfile();
   listenMenuBtns();
+  listenDocument();
+  listenErrorBtn();
 };
 
 const generateRandomSelection = (items) => {
@@ -74,6 +75,7 @@ const generateRandomSelection = (items) => {
 };
 
 const searchMedia = () => {
+  section = 'Series';
   const query = document.querySelector('.js-search').value;
   getApiSeriesByName(query).then((data) => {
     const results = data;
@@ -84,19 +86,25 @@ const searchMedia = () => {
       console.log(mediaSelection);
     }
     paintSelection(mediaSelection);
+    listenMakeFavoriteHeart();
+    listenMakeWatchedEye();
+    applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
+    applyClassIfInList(
+      '.make-favorite-heart',
+      favoriteSeries,
+      'favorite-heart'
+    );
   });
 };
 
-// const updateFavoriteSection = (ev) => {
-//   listenMakeFavoriteHeart();
-//   const id = getClickedMediaId(ev);
-
-// };
-const showFavorites = () => {
-  section = 'Favorites';
-  console.log('Section: ' + section);
+const showRandomSelection = () => {
+  section = 'Series';
+  idSelection = [];
+  changeGenreToAll();
+  generateRandomSelection(50);
+  initializeLoadBar();
   let mediaSelection = [];
-  for (const id of favoriteSeries) {
+  for (const id of idSelection) {
     getApiSeriesById(id).then((data) => {
       // Check availabily
       if (data.status !== 404) {
@@ -105,45 +113,71 @@ const showFavorites = () => {
       }
       paintSelection(mediaSelection);
       listenMakeFavoriteHeart();
-      const hearts = document.querySelectorAll('.make-favorite-heart');
-      for (const heart of hearts) {
-        heart.classList.add('favorite-heart');
-      }
+      listenMakeWatchedEye();
     });
   }
-};
+  applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
 
-const showRandomSelection = () => {
-  section = 'Series';
-  console.log(section);
-  console.log('there');
-  idSelection = [];
-  generateRandomSelection(20);
-
-  let mediaSelection = [];
-  for (const id of idSelection) {
-    getApiSeriesById(id)
-      .then((data) => {
-        // Check availabily
-        if (data.status !== 404) {
-          mediaSelection.push(data);
-          checkImage(data);
-        }
-        paintSelection(mediaSelection);
-      })
-      .then(listenMakeFavoriteHeart());
-  }
+  applyClassIfInList('.make-favorite-heart', favoriteSeries, 'favorite-heart');
   listenMenuBtns();
+  listenDocument();
 };
 
-const showProfileMenu = () => {
-  const userMenuEl = document.querySelector('.profile__menu');
-  userMenuEl.classList.toggle('expand');
-  console.log('profile');
+const showDropMenu = () => {
+  const genresBtn = document.querySelector('.dropdown-menu');
+  genresBtn.classList.toggle('hidden');
 };
+
+const closeMenus = (e) => {
+  const genresBtn = document.querySelector('.dropdown-menu');
+  if (
+    !e.target.classList.contains('js-filter-genre') &&
+    !genresBtn.classList.contains('hidden')
+  ) {
+    genresBtn.classList.add('hidden');
+  }
+};
+
+const initializeLoadBar = () => {
+  const loadingBar = document.querySelector('.js-load-bar');
+  loadingBar.classList.add('init-expand');
+  setTimeout(function () {
+    loadingBar.classList.remove('init-expand');
+  }, 6500);
+};
+
+const removeWelcomePage = () => {
+  const welcomePage = document.querySelector('.welcome__area');
+  welcomePage.remove();
+};
+
+// change genre to All
+const changeGenreToAll = () => {
+  const genreText = document.querySelector('.value.js-filter-genre');
+  genreText.innerHTML = 'All';
+};
+
 /*****************************
  *         LISTENERS         *
  ****************************/
+
+// helper for multiple btns
+const listenEvents = (selector, handler, eventType = 'click') => {
+  const elements = document.querySelectorAll(selector);
+  for (const element of elements) {
+    element.addEventListener(eventType, handler);
+  }
+};
+
+const listenMenuBtns = () => {
+  listenSearchBar();
+  listenFavoritesBtn();
+  listenWatchedBtn();
+  listenSeriesBtn();
+  listenProfileBtn();
+  listenGenresBtn();
+  listenGenres();
+};
 
 const listenSearchBar = () => {
   const searchInputEl = document.querySelector('.js-search');
@@ -154,48 +188,9 @@ const listenSearchBar = () => {
     }
   });
 };
-// const listenSearchBtn = () => {
-//   const searchInputBtnEl = document.querySelector('.js-btn-search');
-//   searchInputBtnEl.addEventListener('click', searchMedia);
-// };
 
 const listenGenres = () => {
   listenEvents('.js-genre-option', filterByGenres);
-};
-
-const filterByGenres = (e) => {
-  const genreText = document.querySelector('.value.js-filter-genre');
-  const genre = e.target.dataset.genre;
-  console.log('Filter time ' + genre);
-  genreText.innerHTML = genre;
-  let genreSelection = [];
-  let mediaSelection = [];
-  let idSelection = [];
-  getApiSeriesByGenre(genre).then((data) => {
-    // Check by genre
-    for (const item of data) {
-      genreSelection.push(item);
-    }
-    console.log(genreSelection);
-    for (const item of genreSelection) {
-      if (item['genre'].findIndex((element) => element === genre) !== -1) {
-        console.log('contains');
-        idSelection.push(item.id);
-      }
-    }
-    for (let i = 0; i < 20; i++) {
-      getApiSeriesById(idSelection[i]).then((data) => {
-        // Check availabily
-        if (data.status !== 404) {
-          mediaSelection.push(data);
-          checkImage(data);
-        }
-        paintSelection(mediaSelection);
-        listenMakeFavoriteHeart();
-      });
-    }
-  });
-  console.log(genreSelection);
 };
 
 // listen favorites
@@ -210,19 +205,7 @@ const listenFavoritesBtn = () => {
   favoriteMenuEl.addEventListener('click', showFavorites);
 };
 
-const listenMenuBtns = () => {
-  listenSearchBar();
-  //   listenSearchBtn();
-  listenFavoritesBtn();
-  listenWatchedBtn();
-  listenSeriesBtn();
-  listenProfileBtn();
-  listenGenresBtn();
-  listenGenres();
-};
-
 // listen menu items
-
 const listenSeriesBtn = () => {
   const seriesMenuEl = document.querySelector('.js-search__series');
   seriesMenuEl.addEventListener('click', showRandomSelection);
@@ -234,35 +217,22 @@ const listenProfileBtn = () => {
 };
 
 // Listen genre menu
-
 const listenGenresBtn = () => {
   const genresBtn = document.querySelector('.filter.genres');
   genresBtn.addEventListener('click', showDropMenu);
 };
 
-const showDropMenu = () => {
-  const genresBtn = document.querySelector('.dropdown-menu');
-  genresBtn.classList.toggle('hidden');
-};
-
+// listens clicks on document --> for escaping drop-down menu
 const listenDocument = () => {
   document.addEventListener('click', closeMenus);
 };
 
-const closeMenus = (e) => {
-  const genresBtn = document.querySelector('.dropdown-menu');
-  if (
-    !e.target.classList.contains('js-filter-genre') &&
-    !genresBtn.classList.contains('hidden')
-  ) {
-    genresBtn.classList.add('hidden');
-  }
-};
-listenDocument();
 /*****************************
  *        PAINT HTML         *
  ****************************/
-// Paint Drop down menu (genres)
+
+// genres drop down menu
+
 const paintDropDownGenres = (array) => {
   const dropDownEl = document.querySelector('.dropdown-menu');
   dropDownEl.innerHTML = '';
@@ -278,7 +248,9 @@ const getDropDownHtmlCode = (genre) => {
   htmlCode += `</li>`;
   return htmlCode;
 };
-// Paint random Selection
+
+// a random selection
+
 const paintSelection = (media) => {
   const selectionAreaEl = document.querySelector('.js-selection-area');
   selectionAreaEl.innerHTML = '';
@@ -320,7 +292,9 @@ const getSelectionHtmlCode = (media) => {
   return htmlCode;
 };
 
-// get api
+/*************************
+ *          API          *
+ *************************/
 
 const getApiSeriesById = (id) => {
   return fetch(`//api.tvmaze.com/shows/${id}`).then((response) =>
@@ -336,23 +310,4 @@ const getApiSeriesByName = (query) => {
 
 const getApiSeriesByGenre = () => {
   return fetch(`./public/api/genres.json`).then((response) => response.json());
-};
-
-// events
-
-const listenEvents = (selector, handler, eventType = 'click') => {
-  const elements = document.querySelectorAll(selector);
-  for (const element of elements) {
-    element.addEventListener(eventType, handler);
-  }
-};
-
-const initializeLoadBar = () => {
-  const loadingBar = document.querySelector('.js-load-bar');
-  loadingBar.classList.add('init-expand');
-};
-
-const removeWelcomePage = () => {
-  const welcomePage = document.querySelector('.welcome__area');
-  welcomePage.remove();
 };

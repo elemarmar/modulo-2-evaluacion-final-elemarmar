@@ -1,14 +1,23 @@
 'use strict';
 
-// global data
+/*************************
+ *      Global data      *
+ *************************/
 let user = {};
 let avatarUrl = '';
 let movieQuotes = '';
 
-// start app
+/*************************
+ *   start welcome app   *
+ *************************/
 const startWelcomeApp = () => {
   getFromLocalStorage();
-  if (user.name) {
+  console.log(user);
+  console.log(user.lastLogin);
+  if (user.lastLogin === whatDayIsToday()) {
+    console.log('delete');
+    takeToWebsite();
+  } else if (user.name) {
     showWelcomePage();
   } else {
     getApiData(randomString()).then(() => {
@@ -20,38 +29,39 @@ const startWelcomeApp = () => {
   }
 };
 
-// helpers
 const showWelcomePage = () => {
   paintWelcome();
   getApiQuotes();
   listenKeyEnd();
 };
 
+/*************************
+ *        helpers        *
+ *************************/
+
 const randomizeAvatar = () => {
   const newAvatar = randomString();
   paintAvatar(newAvatar);
 };
 
-const randomString = () => {
-  return Math.random().toString(36).substr(2, 5);
-};
-
-const randomNumber = (max) => {
-  return Math.floor(Math.random() * max);
-};
-
+// start series app
 const takeToWebsite = () => {
-  // start app
-  startMovieApp();
+  setlastLogin();
+  setInLocalStorage();
+  startSeriesApp();
 };
 
+// welcome page fades
 const fadeOut = () => {
   const page = document.querySelector('.welcome__area');
   page.classList.add('fade-out');
-  const temp = setTimeout(takeToWebsite, 4000);
+  const temp = setTimeout(takeToWebsite, 3000);
 };
 
-// listen events
+/*************************
+ *     listen events     *
+ *************************/
+
 const listenNameInput = () => {
   const inputNameEl = document.querySelector('.request__info-name');
   inputNameEl.addEventListener('keyup', function () {
@@ -66,7 +76,6 @@ const listenNameInput = () => {
 const listenRefreshAvatar = () => {
   const refreshEl = document.querySelector('.refresh-avatar');
   refreshEl.addEventListener('click', randomizeAvatar);
-  setInLocalStorage();
 };
 
 const listenAcceptNameAvatar = () => {
@@ -74,11 +83,34 @@ const listenAcceptNameAvatar = () => {
   happyEl.addEventListener('click', showWelcomePage);
 };
 
+// press any key to load series app
 const listenKeyEnd = () => {
   document.addEventListener('keydown', fadeOut);
 };
 
-// Paint and refresh avatar
+// generate a random string
+
+const randomString = () => {
+  return Math.random().toString(36).substr(2, 5);
+};
+
+// get today's date
+const whatDayIsToday = () => {
+  let today = new Date().toLocaleString().split(',')[0];
+  return today;
+};
+
+// set last login
+const setlastLogin = () => {
+  const today = whatDayIsToday();
+  user['lastLogin'] = today;
+};
+
+/*************************
+ *         paint         *
+ *************************/
+
+// paints avatar
 
 const paintAvatar = (username) => {
   let htmlCode = '';
@@ -91,7 +123,7 @@ const paintAvatar = (username) => {
   });
 };
 
-// Paint Request info message
+// paints message that requests info (1st time)
 
 const paintRequestInfo = () => {
   let requestInfocode = '';
@@ -110,7 +142,7 @@ const getRequestInfoHtmlCode = (url) => {
   htmlCode += `   <div class="input-highlight"></div>`;
   htmlCode += `   <div class="request__info--avatar">`;
   htmlCode += `       <div class="avatar__container">`;
-  htmlCode += `           <img src="${url}" alt="avatar image" class="avatar">`;
+  htmlCode += `           <img src="${url}" alt="avatar image" class="avatar request">`;
   htmlCode += `      </div>`;
   htmlCode += `      <p class="avatar-description">`;
   htmlCode += `           <span class="js-not-happy not-happy">Not happy ?</span>`;
@@ -123,7 +155,7 @@ const getRequestInfoHtmlCode = (url) => {
   return htmlCode;
 };
 
-// Paint Welcome message
+// aints Welcome message
 
 const paintWelcome = () => {
   let welcomeHtmlCode = '';
@@ -137,7 +169,7 @@ const getWelcomeHtmlCode = () => {
   htmlCode += `<div class="welcome__container">`;
   htmlCode += `     <h1 class="welcome-title">Hello, <span class="name">${user.name}</span></h1>`;
   htmlCode += `     <div class="avatar__container">`;
-  htmlCode += `           <img src="${user.avatar}" alt="avatar image" class="avatar fade-in">`;
+  htmlCode += `           <img src="${user.avatar}" alt="" class="avatar welcome fade-in">`;
   htmlCode += `     </div>`;
   htmlCode += `     <p class="quote fade-in js-quote"></p>`;
   htmlCode += `</div>`;
@@ -145,7 +177,11 @@ const getWelcomeHtmlCode = () => {
   return htmlCode;
 };
 
-// api
+/*************************
+ *          API          *
+ *************************/
+
+// get avatars
 
 const getApiData = (string) => {
   return fetch(
@@ -153,6 +189,7 @@ const getApiData = (string) => {
   ).then((data) => (avatarUrl = data.url));
 };
 
+// get quotes (local api)
 const getApiQuotes = () => {
   fetch('./public/api/data.json')
     .then((response) => response.json())
@@ -163,7 +200,9 @@ const getApiQuotes = () => {
     });
 };
 
-// local storage
+/*************************
+ *     local storage     *
+ *************************/
 
 const getFromLocalStorage = () => {
   const localStorageUser = localStorage.getItem('userDataLog');
@@ -177,6 +216,4 @@ const setInLocalStorage = () => {
   localStorage.setItem('userDataLog', stringifyUser);
 };
 
-// start app
-
-startWelcomeApp();
+/********************************************************/
