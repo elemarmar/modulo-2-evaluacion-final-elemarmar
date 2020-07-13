@@ -240,6 +240,7 @@ Para la realización de la página no he estado sola, he podido servirme del tra
 - [**TV Maze api**](https://www.tvmaze.com/api): utilizado para obtener información sobre series.
 - **[Movie quotes de Lucas Vilaboim](https://github.com/vilaboim/movie-quotes/tree/e72e64502486d9d9d528277a1dbe94f20f011bc6)**: utilizado para pintar citas de cine en la página de bienvenida. 
 - **[Avataaars Sprites](https://www.npmjs.com/package/@dicebear/avatars-avataaars-sprites)**: utilizado para generar los avatares de la página. 
+- **[Popcorn Time](https://img.utdstc.com/screen/1/popcorn-time-009.jpg:300)**: como podéis ver no soy ninguna artista diseñadora 👩🏻‍🎨 y me he inspirado casi al milímetro en la aplicación popcorntime, que siempre me ha gustaod mucho su interfaz. He añadido algunos cambios y me gustaría añadir más en el futuro.
 
 ---
 
