@@ -523,7 +523,7 @@ const listenSearchBar = () => {
   searchInputEl.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
       searchMedia();
-      searchInputEl.value = '';
+      //   searchInputEl.value = '';
     }
   });
 };
