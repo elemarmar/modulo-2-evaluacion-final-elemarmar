@@ -112,7 +112,6 @@ html {
 
 #init-content {
   width: 100%;
-  /* Full Width */
   height: 5px;
   background: #000;
   margin-top: 14%;
@@ -128,8 +127,6 @@ html {
   z-index: 500;
   box-shadow: 0px 0px 10px 1px rgba(0, 198, 255, 0.7);
   animation: fullexpand 6s ease-out;
-  //   -moz-animation: fullexpand 10s ease-out;
-  //   -webkit-animation: fullexpand 10s ease-out;
   animation-fill-mode: forwards;
 }
 
@@ -146,40 +143,6 @@ html {
   }
 
   100% {
-    opacity: 0;
-  }
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes spinoff {
-  0% {
-    -webkit-transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(-360deg);
-  }
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(359deg);
-  }
-}
-
-@keyframes blinker {
-  50% {
     opacity: 0;
   }
 }

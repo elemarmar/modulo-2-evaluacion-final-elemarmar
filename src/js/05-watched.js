@@ -19,16 +19,17 @@ const listenWatchedBtn = () => {
  *           HELPERS         *
  ****************************/
 
-// add to watched
+// add to watched:
+//⚠️ A new function could be used for both addToWatched and addToFavorites,
+// since they both follow same steps --> pending
+// Also--> divide function in smaller steps --> pending
 
 const addToWatched = (ev) => {
   const id = getClickedMediaId(ev);
   const eye = document.querySelector(`.make-watched-eye[data-id="${id}"]`);
-  console.log(eye);
-  // delete if already there
 
+  // delete from screen if user clicks on eye when in WATCHED section
   if (section === 'Watched') {
-    console.log('Watched!');
     const mediaToDelete = document.querySelector(`[data-id="${id}"]`);
     const indexFound = watchedSeries.findIndex((element) => element === id);
     watchedSeries.splice(indexFound, 1);
@@ -36,32 +37,31 @@ const addToWatched = (ev) => {
     setInLocalStorage();
     eye.classList.remove('watched-eye');
     mediaToDelete.style.display = 'none';
+    // remove from watched list
+  } else if (isMediaInList(id, watchedSeries)) {
+    const indexFound = watchedSeries.findIndex((element) => element === id);
+    watchedSeries.splice(indexFound, 1);
+    user['watchedSeries'] = watchedSeries;
+    setInLocalStorage();
+    eye.classList.remove('watched-eye');
+    // add to watched
   } else {
-    if (isMediaInList(id, watchedSeries)) {
-      const indexFound = watchedSeries.findIndex((element) => element === id);
-      watchedSeries.splice(indexFound, 1);
-      user['watchedSeries'] = watchedSeries;
-      setInLocalStorage();
-      eye.classList.remove('watched-eye');
-      // add to favorites
-    } else {
-      watchedSeries.push(id);
-      user['watchedSeries'] = watchedSeries;
-      setInLocalStorage();
-      eye.classList.add('watched-eye');
-    }
+    watchedSeries.push(id);
+    user['watchedSeries'] = watchedSeries;
+    setInLocalStorage();
+    eye.classList.add('watched-eye');
   }
   paintProfile();
-  console.log(watchedSeries);
 };
 
 // show watched series
-
+// ⚠️ A new function could be used to simplify both showWatched and showFavorites
+// since both follow same steps --> pending
 const showWatched = () => {
   if (section !== 'Watched' && watchedSeries.length !== 0) {
+    // avoids refreshing results when clicking several times on watched list
     section = 'Watched';
     changeGenreToAll();
-    console.log('Section: ' + section);
     let mediaSelection = [];
     for (const id of watchedSeries) {
       getApiSeriesById(id).then((data) => {
@@ -71,33 +71,19 @@ const showWatched = () => {
           checkImage(data);
           checkRating(data);
         }
+        // update everything
         paintSelection(mediaSelection);
         listenMakeWatchedEye();
         listenMakeFavoriteHeart();
         applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
-
         applyClassIfInList(
           '.make-favorite-heart',
           favoriteSeries,
           'favorite-heart'
         );
-
-        //   const eyes = document.querySelectorAll('.make-watched-eye');
-        //   for (const eye of eyes) {
-        //     eye.classList.add('watched-eye');
-        //   }
       });
     }
   }
 };
 
-// apply class if element is in a list
-const applyClassIfInList = (selector, list, classToApply) => {
-  const elements = document.querySelectorAll(selector);
-  for (const element of elements) {
-    const id = element.dataset.id;
-    if (isMediaInList(id, list)) {
-      element.classList.add(classToApply);
-    }
-  }
-};
+

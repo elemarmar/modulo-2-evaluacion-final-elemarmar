@@ -16,11 +16,7 @@ const showErrorMessage = () => {
   codeHTML += '<h2 class="error-title">Ups ! </h2>';
   codeHTML +=
     '<p class="error-text">This feature is currently unavailable but will come out very soon. Stay tuned!</p>';
-  codeHTML += `<div class="error-avatar" style="background-image: url('https://avatars.dicebear.com/api/avataaars/i1xim.svg?options[mouth][]=sad&options[style]=circle&options[eyes][]=roll&options[b]=%23900')"></div>`;
+  codeHTML += `<div class="error-avatar" style="background-image: url('https://avatars.dicebear.com/api/avataaars/${user.name}.svg?options[mouth][]=sad&options[style]=circle&options[eyes][]=roll&options[b]=%23900')"></div>`;
   codeHTML += `</div>`;
   selectionArea.innerHTML = codeHTML;
 };
-
-// start app
-
-startWelcomeApp();

@@ -3,7 +3,6 @@
 const showProfileMenu = () => {
   const userMenuEl = document.querySelector('.profile__menu');
   userMenuEl.classList.toggle('expand');
-  console.log('profile');
 };
 
 /*************************
@@ -30,6 +29,7 @@ const getProfileHtmlCode = () => {
   )}%</span>`;
   htmlCode += `      <span class="watched-info">Series watched: ${watchedSeries.length}</span>`;
   htmlCode += `   </li>`;
+  // For next release: movie stats
   //   htmlCode += `    <li class="profile__section movies">`;
   //   htmlCode += `      <span class="percentage">52%</span>`;
   //   htmlCode += `     <span class="watched-info">Movies watched: 23</span>`;
@@ -42,7 +42,6 @@ const getProfileHtmlCode = () => {
   htmlCode += `    </li>`;
   htmlCode += `  </ul>`;
   htmlCode += `</div>`;
-
   htmlCode += `<div class="copyright">`;
   htmlCode += `<div class="creator-avatar"></div>`;
   htmlCode += `<h3 class="about-me">About me</h3>`;
@@ -60,6 +59,5 @@ const getProfileHtmlCode = () => {
   htmlCode += `</a>`;
   htmlCode += `</p>`;
   htmlCode += `</div>`;
-
   return htmlCode;
 };

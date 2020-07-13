@@ -5,14 +5,15 @@
  *************************/
 
 let section = ''; // tells us in which section we are
-let idSelection = [];
+let idSelection = []; // only contains ids of series to get from server
 let favoriteSeries = [];
 let watchedSeries = [];
+// a mediaSeries array is used throughout the app, it
+// contains the actual series info (object) of the idSelection
 
 // list of genres from TV Maze api
 const genreList = [
   'Action',
-  'Adult',
   'Adventure',
   'Anime',
   'Children',
@@ -45,15 +46,19 @@ const genreList = [
  *************************/
 
 // Starting the app
+
 const startSeriesApp = () => {
   removeWelcomePage();
-  //   debugger;
   getFromLocalStorage();
 
-  console.log(user);
+  // if use has favorite series from previous sessions,
+  // add them to current favorite list
   if (user.favoriteSeries) {
-    console.log("It's not empty");
     favoriteSeries = user.favoriteSeries;
+  }
+  if (user.watchedSeries) {
+    // same with watched series
+    watchedSeries = user.watchedSeries;
   }
   showRandomSelection();
   paintDropDownGenres(genreList);
@@ -63,16 +68,19 @@ const startSeriesApp = () => {
   listenErrorBtn();
 };
 
+// generates a random selection of series
+
 const generateRandomSelection = (items) => {
-  // Hay que asegurarse que no se repiten IDs
   for (let i = 0; i < items; i++) {
     const number = randomNumber(4916);
-    // Make sure no ID is repeated
+    // make sure ids aren't repeated
     if (idSelection.indexOf(number) === -1) {
       idSelection.push(number);
     }
   }
 };
+
+// searches series by search-input value
 
 const searchMedia = () => {
   section = 'Series';
@@ -84,7 +92,6 @@ const searchMedia = () => {
       checkImage(result.show);
       checkRating(result.show);
       mediaSelection.push(result.show);
-      console.log(mediaSelection);
     }
     paintSelection(mediaSelection);
     listenMakeFavoriteHeart();
@@ -98,12 +105,14 @@ const searchMedia = () => {
   });
 };
 
+// shows a random selection of series
+
 const showRandomSelection = () => {
   section = 'Series';
   idSelection = [];
-  changeGenreToAll();
+  changeGenreToAll(); // changes genre to 'All'
   generateRandomSelection(50);
-  initializeLoadBar();
+  initializeLoadBar(); // shows loading bar
   let mediaSelection = [];
   for (const id of idSelection) {
     getApiSeriesById(id).then((data) => {
@@ -118,17 +127,21 @@ const showRandomSelection = () => {
       listenMakeWatchedEye();
     });
   }
+  // apply class to eye and heart btns
   applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
-
   applyClassIfInList('.make-favorite-heart', favoriteSeries, 'favorite-heart');
   listenMenuBtns();
   listenDocument();
 };
 
+// shows drop menu
+
 const showDropMenu = () => {
   const genresBtn = document.querySelector('.dropdown-menu');
   genresBtn.classList.toggle('hidden');
 };
+
+// click anywhere closes the drop menu
 
 const closeMenus = (e) => {
   const genresBtn = document.querySelector('.dropdown-menu');
@@ -251,7 +264,7 @@ const getDropDownHtmlCode = (genre) => {
   return htmlCode;
 };
 
-// a random selection
+// paint random selection
 
 const paintSelection = (media) => {
   const selectionAreaEl = document.querySelector('.js-selection-area');
@@ -264,7 +277,7 @@ const paintSelection = (media) => {
 const getSelectionHtmlCode = (media) => {
   let htmlCode = '';
   htmlCode += `<article class="media__container" data-id="${media.id}">`;
-  htmlCode += `<div div class="cover" style="background-image: url('${media.image}')"> `;
+  htmlCode += `<div class="cover" style="background-image: url('${media.image}')"> `;
   htmlCode += `<div class="cover-imgs" ></div>`;
   htmlCode += `<div class="cover-overlay cover-info-overlay">`;
   htmlCode += `<div class="media__poster-check">`;
@@ -278,11 +291,6 @@ const getSelectionHtmlCode = (media) => {
   htmlCode += `<span class="media__poster-stars">${calculateRatingStars(
     media.rating.average
   )}`;
-  //   htmlCode += ` <i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="far fa-star"></i>`;
   htmlCode += `</span>`;
   htmlCode += `<span class="media__poster-score">${media.rating.average}</span>`;
   htmlCode += `</div>`;

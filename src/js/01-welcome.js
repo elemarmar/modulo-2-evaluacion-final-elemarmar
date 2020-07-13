@@ -4,22 +4,22 @@
  *      Global data      *
  *************************/
 let user = {};
-let avatarUrl = '';
-let movieQuotes = '';
+let avatarUrl = ''; // contains random avatar url
+let movieQuotes = ''; // contains random quotes from local json
 
 /*************************
  *   start welcome app   *
  *************************/
 const startWelcomeApp = () => {
   getFromLocalStorage();
-  console.log(user);
-  console.log(user.lastLogin);
+  // if user has already logged in TODAY, skip the welcome page
   if (user.lastLogin === whatDayIsToday()) {
-    console.log('delete');
     takeToWebsite();
   } else if (user.name) {
+    // if user has not sigged in TODAY but has previously "signed up", show welcome page
     showWelcomePage();
   } else {
+    // if new user
     getApiData(randomString()).then(() => {
       paintRequestInfo();
       listenNameInput();
@@ -46,12 +46,12 @@ const randomizeAvatar = () => {
 
 // start series app
 const takeToWebsite = () => {
-  setlastLogin();
+  setlastLogin(); // store last log in
   setInLocalStorage();
   startSeriesApp();
 };
 
-// welcome page fades
+// welcome page fades and takes to series app
 const fadeOut = () => {
   const page = document.querySelector('.welcome__area');
   page.classList.add('fade-out');
@@ -66,7 +66,6 @@ const listenNameInput = () => {
   const inputNameEl = document.querySelector('.request__info-name');
   inputNameEl.addEventListener('keyup', function () {
     const inputNameValue = inputNameEl.value;
-    console.log(inputNameValue);
     user['name'] = inputNameValue;
     paintAvatar(inputNameValue);
     setInLocalStorage();
@@ -84,6 +83,7 @@ const listenAcceptNameAvatar = () => {
 };
 
 // press any key to load series app
+
 const listenKeyEnd = () => {
   document.addEventListener('keydown', fadeOut);
 };
@@ -155,7 +155,7 @@ const getRequestInfoHtmlCode = (url) => {
   return htmlCode;
 };
 
-// aints Welcome message
+// paints Welcome message
 
 const paintWelcome = () => {
   let welcomeHtmlCode = '';
@@ -190,6 +190,7 @@ const getApiData = (string) => {
 };
 
 // get quotes (local api)
+
 const getApiQuotes = () => {
   fetch('./public/api/data.json')
     .then((response) => response.json())

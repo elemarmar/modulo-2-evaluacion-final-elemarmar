@@ -4,22 +4,22 @@
  *      Global data      *
  *************************/
 let user = {};
-let avatarUrl = '';
-let movieQuotes = '';
+let avatarUrl = ''; // contains random avatar url
+let movieQuotes = ''; // contains random quotes from local json
 
 /*************************
  *   start welcome app   *
  *************************/
 const startWelcomeApp = () => {
   getFromLocalStorage();
-  console.log(user);
-  console.log(user.lastLogin);
+  // if user has already logged in TODAY, skip the welcome page
   if (user.lastLogin === whatDayIsToday()) {
-    console.log('delete');
     takeToWebsite();
   } else if (user.name) {
+    // if user has not sigged in TODAY but has previously "signed up", show welcome page
     showWelcomePage();
   } else {
+    // if new user
     getApiData(randomString()).then(() => {
       paintRequestInfo();
       listenNameInput();
@@ -46,12 +46,12 @@ const randomizeAvatar = () => {
 
 // start series app
 const takeToWebsite = () => {
-  setlastLogin();
+  setlastLogin(); // store last log in
   setInLocalStorage();
   startSeriesApp();
 };
 
-// welcome page fades
+// welcome page fades and takes to series app
 const fadeOut = () => {
   const page = document.querySelector('.welcome__area');
   page.classList.add('fade-out');
@@ -66,7 +66,6 @@ const listenNameInput = () => {
   const inputNameEl = document.querySelector('.request__info-name');
   inputNameEl.addEventListener('keyup', function () {
     const inputNameValue = inputNameEl.value;
-    console.log(inputNameValue);
     user['name'] = inputNameValue;
     paintAvatar(inputNameValue);
     setInLocalStorage();
@@ -84,6 +83,7 @@ const listenAcceptNameAvatar = () => {
 };
 
 // press any key to load series app
+
 const listenKeyEnd = () => {
   document.addEventListener('keydown', fadeOut);
 };
@@ -155,7 +155,7 @@ const getRequestInfoHtmlCode = (url) => {
   return htmlCode;
 };
 
-// aints Welcome message
+// paints Welcome message
 
 const paintWelcome = () => {
   let welcomeHtmlCode = '';
@@ -190,6 +190,7 @@ const getApiData = (string) => {
 };
 
 // get quotes (local api)
+
 const getApiQuotes = () => {
   fetch('./public/api/data.json')
     .then((response) => response.json())
@@ -228,8 +229,7 @@ const calculatePerctTotalSeries = (array) => {
   const totalNumber = 49146;
   const watchedNumber = array.length;
   const result = (watchedNumber * 100) / totalNumber;
-
-  return result.toFixed(2);
+  return result.toFixed(2); // show only 2 decimals
 };
 
 // check if there is image (if not, replace)
@@ -237,7 +237,7 @@ const calculatePerctTotalSeries = (array) => {
 function checkImage(result) {
   if (!result.image) {
     const avatar = JSON.parse(localStorage.getItem('userDataLog')).avatar;
-    console.log(avatar);
+    // show sad version of user's avatar instead of cover
     result.image = avatar.replace(
       'smile',
       'concerned&options[style]=circle&options[eyes][]=surprised&options[b]=%23900'
@@ -262,37 +262,37 @@ const isMediaInList = (id, list) => {
 // filters by genre
 
 const filterByGenres = (e) => {
-  section = 'Series';
+  section = 'Series'; // changes current section active to 'Series'
   const genreText = document.querySelector('.value.js-filter-genre');
   const genre = e.target.dataset.genre;
-  console.log('Filter time ' + genre);
   genreText.innerHTML = genre;
   let genreSelection = [];
   let mediaSelection = [];
   let idSelection = [];
   getApiSeriesByGenre(genre).then((data) => {
-    // Check by genre
+    // add results from local api (genres) to array genreSelection
     for (const item of data) {
       genreSelection.push(item);
     }
-    console.log(genreSelection);
+    // looks for results in genreSelection that match the genre specified
     for (const item of genreSelection) {
       if (item['genre'].findIndex((element) => element === genre) !== -1) {
-        console.log('contains');
         idSelection.push(item.id);
       }
     }
+    // gets info from selected ids from server
     for (let i = 0; i < 20; i++) {
       getApiSeriesById(idSelection[i]).then((data) => {
         // Check availabily
         if (data.status !== 404) {
-          mediaSelection.push(data);
+          mediaSelection.push(data); // only adds if status is not 404
           checkImage(data);
           checkRating(data);
         }
         paintSelection(mediaSelection);
         listenMakeFavoriteHeart();
         listenMakeWatchedEye();
+        // Apply classes to heart & eye btns
         applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
         applyClassIfInList(
           '.make-favorite-heart',
@@ -302,13 +302,23 @@ const filterByGenres = (e) => {
       });
     }
   });
-  console.log(genreSelection);
 };
 
 // generate a random number
 
 const randomNumber = (max) => {
   return Math.floor(Math.random() * max);
+};
+
+// apply class if element is in a list
+const applyClassIfInList = (selector, list, classToApply) => {
+  const elements = document.querySelectorAll(selector);
+  for (const element of elements) {
+    const id = element.dataset.id;
+    if (isMediaInList(id, list)) {
+      element.classList.add(classToApply);
+    }
+  }
 };
 
 'use strict';
@@ -318,14 +328,15 @@ const randomNumber = (max) => {
  *************************/
 
 let section = ''; // tells us in which section we are
-let idSelection = [];
+let idSelection = []; // only contains ids of series to get from server
 let favoriteSeries = [];
 let watchedSeries = [];
+// a mediaSeries array is used throughout the app, it
+// contains the actual series info (object) of the idSelection
 
 // list of genres from TV Maze api
 const genreList = [
   'Action',
-  'Adult',
   'Adventure',
   'Anime',
   'Children',
@@ -358,15 +369,19 @@ const genreList = [
  *************************/
 
 // Starting the app
+
 const startSeriesApp = () => {
   removeWelcomePage();
-  //   debugger;
   getFromLocalStorage();
 
-  console.log(user);
+  // if use has favorite series from previous sessions,
+  // add them to current favorite list
   if (user.favoriteSeries) {
-    console.log("It's not empty");
     favoriteSeries = user.favoriteSeries;
+  }
+  if (user.watchedSeries) {
+    // same with watched series
+    watchedSeries = user.watchedSeries;
   }
   showRandomSelection();
   paintDropDownGenres(genreList);
@@ -376,16 +391,19 @@ const startSeriesApp = () => {
   listenErrorBtn();
 };
 
+// generates a random selection of series
+
 const generateRandomSelection = (items) => {
-  // Hay que asegurarse que no se repiten IDs
   for (let i = 0; i < items; i++) {
     const number = randomNumber(4916);
-    // Make sure no ID is repeated
+    // make sure ids aren't repeated
     if (idSelection.indexOf(number) === -1) {
       idSelection.push(number);
     }
   }
 };
+
+// searches series by search-input value
 
 const searchMedia = () => {
   section = 'Series';
@@ -397,7 +415,6 @@ const searchMedia = () => {
       checkImage(result.show);
       checkRating(result.show);
       mediaSelection.push(result.show);
-      console.log(mediaSelection);
     }
     paintSelection(mediaSelection);
     listenMakeFavoriteHeart();
@@ -411,12 +428,14 @@ const searchMedia = () => {
   });
 };
 
+// shows a random selection of series
+
 const showRandomSelection = () => {
   section = 'Series';
   idSelection = [];
-  changeGenreToAll();
+  changeGenreToAll(); // changes genre to 'All'
   generateRandomSelection(50);
-  initializeLoadBar();
+  initializeLoadBar(); // shows loading bar
   let mediaSelection = [];
   for (const id of idSelection) {
     getApiSeriesById(id).then((data) => {
@@ -431,17 +450,21 @@ const showRandomSelection = () => {
       listenMakeWatchedEye();
     });
   }
+  // apply class to eye and heart btns
   applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
-
   applyClassIfInList('.make-favorite-heart', favoriteSeries, 'favorite-heart');
   listenMenuBtns();
   listenDocument();
 };
 
+// shows drop menu
+
 const showDropMenu = () => {
   const genresBtn = document.querySelector('.dropdown-menu');
   genresBtn.classList.toggle('hidden');
 };
+
+// click anywhere closes the drop menu
 
 const closeMenus = (e) => {
   const genresBtn = document.querySelector('.dropdown-menu');
@@ -564,7 +587,7 @@ const getDropDownHtmlCode = (genre) => {
   return htmlCode;
 };
 
-// a random selection
+// paint random selection
 
 const paintSelection = (media) => {
   const selectionAreaEl = document.querySelector('.js-selection-area');
@@ -577,7 +600,7 @@ const paintSelection = (media) => {
 const getSelectionHtmlCode = (media) => {
   let htmlCode = '';
   htmlCode += `<article class="media__container" data-id="${media.id}">`;
-  htmlCode += `<div div class="cover" style="background-image: url('${media.image}')"> `;
+  htmlCode += `<div class="cover" style="background-image: url('${media.image}')"> `;
   htmlCode += `<div class="cover-imgs" ></div>`;
   htmlCode += `<div class="cover-overlay cover-info-overlay">`;
   htmlCode += `<div class="media__poster-check">`;
@@ -591,11 +614,6 @@ const getSelectionHtmlCode = (media) => {
   htmlCode += `<span class="media__poster-stars">${calculateRatingStars(
     media.rating.average
   )}`;
-  //   htmlCode += ` <i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="fas fa-star"></i>`;
-  //   htmlCode += `<i class="far fa-star"></i>`;
   htmlCode += `</span>`;
   htmlCode += `<span class="media__poster-score">${media.rating.average}</span>`;
   htmlCode += `</div>`;
@@ -632,13 +650,11 @@ const getApiSeriesByGenre = () => {
 // add / delete from favorites
 
 const addToFavorites = (ev) => {
-  console.log('ENter');
   const id = getClickedMediaId(ev);
   const heart = document.querySelector(`.make-favorite-heart[data-id="${id}"]`);
-  // delete if already there
 
+  // if user is in Favorite Section, delete movies from screen when clicking on heart
   if (section === 'Favorites') {
-    console.log('FAvorites!');
     const mediaToDelete = document.querySelector(`[data-id="${id}"]`);
     const indexFound = favoriteSeries.findIndex((element) => element === id);
     favoriteSeries.splice(indexFound, 1);
@@ -646,33 +662,30 @@ const addToFavorites = (ev) => {
     setInLocalStorage();
     heart.classList.remove('favorite-heart');
     mediaToDelete.style.display = 'none';
-
-    console.log(mediaToDelete);
+    // if user is NOT in Favorite Section and clicks on favorited item,
+    // remove it from favorite list
+  } else if (isMediaInList(id, favoriteSeries)) {
+    const indexFound = favoriteSeries.findIndex((element) => element === id);
+    favoriteSeries.splice(indexFound, 1);
+    user['favoriteSeries'] = favoriteSeries;
+    setInLocalStorage();
+    heart.classList.remove('favorite-heart');
+    // add to favorites
   } else {
-    if (isMediaInList(id, favoriteSeries)) {
-      const indexFound = favoriteSeries.findIndex((element) => element === id);
-      favoriteSeries.splice(indexFound, 1);
-      user['favoriteSeries'] = favoriteSeries;
-      setInLocalStorage();
-      heart.classList.remove('favorite-heart');
-      // add to favorites
-    } else {
-      favoriteSeries.push(id);
-      user['favoriteSeries'] = favoriteSeries;
-      setInLocalStorage();
-      heart.classList.add('favorite-heart');
-    }
+    favoriteSeries.push(id);
+    user['favoriteSeries'] = favoriteSeries;
+    setInLocalStorage();
+    heart.classList.add('favorite-heart');
   }
   paintProfile();
-  console.log(favoriteSeries);
 };
 
 // show favorites section
 const showFavorites = () => {
   if (section !== 'Favorites' && favoriteSeries.length !== 0) {
+    // this avoids refreshing favorites
     section = 'Favorites';
     changeGenreToAll();
-    console.log('Section: ' + section);
     let mediaSelection = [];
     for (const id of favoriteSeries) {
       getApiSeriesById(id).then((data) => {
@@ -682,6 +695,7 @@ const showFavorites = () => {
           checkImage(data);
           checkRating(data);
         }
+        // update everything
         paintSelection(mediaSelection);
         listenMakeFavoriteHeart();
         listenMakeWatchedEye();
@@ -691,9 +705,6 @@ const showFavorites = () => {
           favoriteSeries,
           'favorite-heart'
         );
-        //   for (const heart of hearts) {
-        //     heart.classList.add('favorite-heart');
-        //   }
       });
     }
   }
@@ -720,16 +731,17 @@ const listenWatchedBtn = () => {
  *           HELPERS         *
  ****************************/
 
-// add to watched
+// add to watched:
+//⚠️ A new function could be used for both addToWatched and addToFavorites,
+// since they both follow same steps --> pending
+// Also--> divide function in smaller steps --> pending
 
 const addToWatched = (ev) => {
   const id = getClickedMediaId(ev);
   const eye = document.querySelector(`.make-watched-eye[data-id="${id}"]`);
-  console.log(eye);
-  // delete if already there
 
+  // delete from screen if user clicks on eye when in WATCHED section
   if (section === 'Watched') {
-    console.log('Watched!');
     const mediaToDelete = document.querySelector(`[data-id="${id}"]`);
     const indexFound = watchedSeries.findIndex((element) => element === id);
     watchedSeries.splice(indexFound, 1);
@@ -737,32 +749,31 @@ const addToWatched = (ev) => {
     setInLocalStorage();
     eye.classList.remove('watched-eye');
     mediaToDelete.style.display = 'none';
+    // remove from watched list
+  } else if (isMediaInList(id, watchedSeries)) {
+    const indexFound = watchedSeries.findIndex((element) => element === id);
+    watchedSeries.splice(indexFound, 1);
+    user['watchedSeries'] = watchedSeries;
+    setInLocalStorage();
+    eye.classList.remove('watched-eye');
+    // add to watched
   } else {
-    if (isMediaInList(id, watchedSeries)) {
-      const indexFound = watchedSeries.findIndex((element) => element === id);
-      watchedSeries.splice(indexFound, 1);
-      user['watchedSeries'] = watchedSeries;
-      setInLocalStorage();
-      eye.classList.remove('watched-eye');
-      // add to favorites
-    } else {
-      watchedSeries.push(id);
-      user['watchedSeries'] = watchedSeries;
-      setInLocalStorage();
-      eye.classList.add('watched-eye');
-    }
+    watchedSeries.push(id);
+    user['watchedSeries'] = watchedSeries;
+    setInLocalStorage();
+    eye.classList.add('watched-eye');
   }
   paintProfile();
-  console.log(watchedSeries);
 };
 
 // show watched series
-
+// ⚠️ A new function could be used to simplify both showWatched and showFavorites
+// since both follow same steps --> pending
 const showWatched = () => {
   if (section !== 'Watched' && watchedSeries.length !== 0) {
+    // avoids refreshing results when clicking several times on watched list
     section = 'Watched';
     changeGenreToAll();
-    console.log('Section: ' + section);
     let mediaSelection = [];
     for (const id of watchedSeries) {
       getApiSeriesById(id).then((data) => {
@@ -772,43 +783,28 @@ const showWatched = () => {
           checkImage(data);
           checkRating(data);
         }
+        // update everything
         paintSelection(mediaSelection);
         listenMakeWatchedEye();
         listenMakeFavoriteHeart();
         applyClassIfInList('.make-watched-eye', watchedSeries, 'watched-eye');
-
         applyClassIfInList(
           '.make-favorite-heart',
           favoriteSeries,
           'favorite-heart'
         );
-
-        //   const eyes = document.querySelectorAll('.make-watched-eye');
-        //   for (const eye of eyes) {
-        //     eye.classList.add('watched-eye');
-        //   }
       });
     }
   }
 };
 
-// apply class if element is in a list
-const applyClassIfInList = (selector, list, classToApply) => {
-  const elements = document.querySelectorAll(selector);
-  for (const element of elements) {
-    const id = element.dataset.id;
-    if (isMediaInList(id, list)) {
-      element.classList.add(classToApply);
-    }
-  }
-};
+
 
 // show profile menu
 
 const showProfileMenu = () => {
   const userMenuEl = document.querySelector('.profile__menu');
   userMenuEl.classList.toggle('expand');
-  console.log('profile');
 };
 
 /*************************
@@ -835,6 +831,7 @@ const getProfileHtmlCode = () => {
   )}%</span>`;
   htmlCode += `      <span class="watched-info">Series watched: ${watchedSeries.length}</span>`;
   htmlCode += `   </li>`;
+  // For next release: movie stats
   //   htmlCode += `    <li class="profile__section movies">`;
   //   htmlCode += `      <span class="percentage">52%</span>`;
   //   htmlCode += `     <span class="watched-info">Movies watched: 23</span>`;
@@ -847,7 +844,6 @@ const getProfileHtmlCode = () => {
   htmlCode += `    </li>`;
   htmlCode += `  </ul>`;
   htmlCode += `</div>`;
-
   htmlCode += `<div class="copyright">`;
   htmlCode += `<div class="creator-avatar"></div>`;
   htmlCode += `<h3 class="about-me">About me</h3>`;
@@ -865,7 +861,6 @@ const getProfileHtmlCode = () => {
   htmlCode += `</a>`;
   htmlCode += `</p>`;
   htmlCode += `</div>`;
-
   return htmlCode;
 };
 
@@ -887,17 +882,12 @@ const showErrorMessage = () => {
   codeHTML += '<h2 class="error-title">Ups ! </h2>';
   codeHTML +=
     '<p class="error-text">This feature is currently unavailable but will come out very soon. Stay tuned!</p>';
-  codeHTML += `<div class="error-avatar" style="background-image: url('https://avatars.dicebear.com/api/avataaars/i1xim.svg?options[mouth][]=sad&options[style]=circle&options[eyes][]=roll&options[b]=%23900')"></div>`;
+  codeHTML += `<div class="error-avatar" style="background-image: url('https://avatars.dicebear.com/api/avataaars/${user.name}.svg?options[mouth][]=sad&options[style]=circle&options[eyes][]=roll&options[b]=%23900')"></div>`;
   codeHTML += `</div>`;
   selectionArea.innerHTML = codeHTML;
 };
 
-// start app
-
-startWelcomeApp();
-
-
-// check rating
+// check rating and if null -> don't show
 const checkRating = (result) => {
   if (!result.rating.average) {
     result.rating.average = '';
@@ -907,6 +897,7 @@ const checkRating = (result) => {
 };
 
 // calculate stars based on average score
+// ⚠️ This is too manual --> find better way for next release
 const calculateRatingStars = (average) => {
   let stars = '';
   switch (true) {
@@ -962,3 +953,9 @@ const calculateRatingStars = (average) => {
   }
   return stars;
 };
+
+/*************************
+ *   start the app   🎉  *
+ *************************/
+
+startWelcomeApp();

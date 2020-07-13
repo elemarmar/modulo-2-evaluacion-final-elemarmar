@@ -129,28 +129,6 @@ table {
 a {
   text-decoration: none; }
 
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(360deg); } }
-
-@-webkit-keyframes spinoff {
-  0% {
-    -webkit-transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(-360deg); } }
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg); }
-  100% {
-    transform: rotate(359deg); } }
-
-@keyframes blinker {
-  50% {
-    opacity: 0; } }
-
 .error-title {
   font-size: 58px;
   font-weight: bold;
@@ -179,61 +157,6 @@ a {
   width: 300px;
   margin: auto; }
 
-.btn-search {
-  content: '\f002';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  font-style: normal;
-  transition: color 0.5s;
-  position: absolute;
-  top: 11px;
-  left: 7px;
-  z-index: 2;
-  font-size: 1.4em; }
-
-.clear {
-  display: block;
-  font-weight: bold;
-  transition: color 0.5s;
-  position: absolute;
-  top: 8px;
-  right: 5px;
-  padding: 3px 5px;
-  font-size: 1.2em; }
-
-.search-box,
-.search-box:focus {
-  width: 130px;
-  background-color: #0d0d0e;
-  color: #c3c5c7; }
-
-.search__container .search-box {
-  line-height: normal;
-  -webkit-app-region: no-drag;
-  outline: none;
-  cursor: text;
-  width: 0px;
-  height: 18px;
-  position: relative;
-  background: #17181b no-repeat right center;
-  background-position: right 3px center;
-  border: solid 0px;
-  margin: 8px 3px 0;
-  padding: 1px 2px 3px;
-  padding-left: 25px;
-  border-radius: 10em;
-  -webkit-appearance: textfield;
-  -webkit-box-sizing: content-box;
-  transition: width 0.5s; }
-  .search__container .search-box:focus {
-    cursor: auto; }
-    .search__container .search-box:focus:before {
-      color: #2468cc; }
-  .search__container .search-box::-moz-placeholder, .search__container .search-box::-webkit-input-placeholder {
-    color: transparent; }
-  .search__container .search-box:focus::-webkit-input-placeholder {
-    color: rgba(195, 197, 199, 0.7); }
-
 .search {
   margin-bottom: -5px; }
   .search:before {
@@ -248,32 +171,21 @@ a {
     left: 7px;
     z-index: 2;
     font-size: 20px; }
-  .search.edited .clear {
-    display: block;
-    font-weight: bold;
-    transition: color 0.5s;
-    color: #909498;
-    position: absolute;
-    top: 8px;
-    right: 5px;
-    padding: 3px 5px;
-    font-size: 1.2em; }
-  .search.edited input,
+  .search input,
   .search input:focus {
     width: 130px;
     background-color: #0d0d0e;
     color: #c3c5c7; }
-  .search.edited, .search:hover {
+  .search:hover {
     cursor: pointer; }
-    .search.edited:before, .search:hover:before {
+    .search:hover:before {
       color: #2468cc; }
-    .search.edited input, .search:hover input {
+    .search:hover input {
       width: 130px;
       background-color: #0d0d0e;
       color: #c3c5c7; }
   .search input {
     line-height: normal;
-    -webkit-app-region: no-drag;
     outline: none;
     cursor: text;
     width: 0;
@@ -286,8 +198,6 @@ a {
     padding: 1px 2px 3px;
     padding-left: 25px;
     border-radius: 10em;
-    -webkit-appearance: textfield;
-    -webkit-box-sizing: content-box;
     transition: width 0.5s; }
     .search input:focus {
       cursor: auto; }
@@ -306,19 +216,6 @@ a {
 
 .filter-bar {
   font-size: 14px; }
-
-.source {
-  box-sizing: content-box;
-  color: #c3c5c7;
-  text-align: center;
-  cursor: pointer;
-  height: 20px;
-  margin-top: 10px;
-  padding: 0px 15px 1px 18px; }
-  .source:hover {
-    color: #fff; }
-  .source.active {
-    border-bottom: 4px solid #2d72d9; }
 
 .nav.filters {
   float: left;
@@ -571,8 +468,7 @@ a {
       background-color: #6bcadb;
       height: 40px;
       width: 40px;
-      border-radius: 50%;
-      background-image: url("https://avatars.dicebear.com/api/avataaars/Julia.svg?options[mouth][]=smile"); }
+      border-radius: 50%; }
     .top-bar .nav-options .menu-icon {
       font-size: 20px;
       margin: 0 20px;
@@ -903,7 +799,6 @@ html {
 /********/
 #init-content {
   width: 100%;
-  /* Full Width */
   height: 5px;
   background: #000;
   margin-top: 14%; }
@@ -928,28 +823,6 @@ html {
     width: 100%;
     opacity: 1; }
   100% {
-    opacity: 0; } }
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(360deg); } }
-
-@-webkit-keyframes spinoff {
-  0% {
-    -webkit-transform: rotate(0deg); }
-  100% {
-    -webkit-transform: rotate(-360deg); } }
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg); }
-  100% {
-    transform: rotate(359deg); } }
-
-@keyframes blinker {
-  50% {
     opacity: 0; } }
 
 /**************/

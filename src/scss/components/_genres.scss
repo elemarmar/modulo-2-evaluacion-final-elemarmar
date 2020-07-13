@@ -2,24 +2,6 @@
   font-size: 14px;
 }
 
-.source {
-  box-sizing: content-box;
-  color: $FilterBarText;
-  text-align: center;
-  cursor: pointer;
-  height: 20px;
-  margin-top: 10px;
-  padding: 0px 15px 1px 18px;
-
-  &:hover {
-    color: $FilterBarTextHover;
-  }
-
-  &.active {
-    border-bottom: 4px solid $FilterBarActive;
-  }
-}
-
 .nav.filters {
   float: left;
   margin-left: 10px;
@@ -112,7 +94,6 @@
     }
   }
 }
-
 .genres {
   .search-item {
     margin-right: 0;
@@ -124,13 +105,11 @@
   position: absolute;
   margin-top: -3px;
 }
-
 .filter.genres {
   &:hover a {
     color: $FilterBarTextHover;
   }
 }
-
 .hidden {
   display: none;
 }
