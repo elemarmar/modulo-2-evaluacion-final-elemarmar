@@ -3,7 +3,7 @@ const sass = require('gulp-sass');
 const browserSync = require('browser-sync').create();
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es');
 
 // Compile scss into css
 function style() {
