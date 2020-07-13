@@ -82,6 +82,7 @@ const searchMedia = () => {
     let mediaSelection = [];
     for (const result of results) {
       checkImage(result.show);
+      checkRating(result.show);
       mediaSelection.push(result.show);
       console.log(mediaSelection);
     }
@@ -110,6 +111,7 @@ const showRandomSelection = () => {
       if (data.status !== 404) {
         mediaSelection.push(data);
         checkImage(data);
+        checkRating(data);
       }
       paintSelection(mediaSelection);
       listenMakeFavoriteHeart();
@@ -273,12 +275,14 @@ const getSelectionHtmlCode = (media) => {
   htmlCode += `</span>`;
   htmlCode += `</div>`;
   htmlCode += `<div class="media__poster-rating">`;
-  htmlCode += `<span class="media__poster-stars">`;
-  htmlCode += ` <i class="fas fa-star"></i>`;
-  htmlCode += `<i class="fas fa-star"></i>`;
-  htmlCode += `<i class="fas fa-star"></i>`;
-  htmlCode += `<i class="fas fa-star"></i>`;
-  htmlCode += `<i class="far fa-star"></i>`;
+  htmlCode += `<span class="media__poster-stars">${calculateRatingStars(
+    media.rating.average
+  )}`;
+  //   htmlCode += ` <i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="far fa-star"></i>`;
   htmlCode += `</span>`;
   htmlCode += `<span class="media__poster-score">${media.rating.average}</span>`;
   htmlCode += `</div>`;

@@ -288,6 +288,7 @@ const filterByGenres = (e) => {
         if (data.status !== 404) {
           mediaSelection.push(data);
           checkImage(data);
+          checkRating(data);
         }
         paintSelection(mediaSelection);
         listenMakeFavoriteHeart();
@@ -394,6 +395,7 @@ const searchMedia = () => {
     let mediaSelection = [];
     for (const result of results) {
       checkImage(result.show);
+      checkRating(result.show);
       mediaSelection.push(result.show);
       console.log(mediaSelection);
     }
@@ -422,6 +424,7 @@ const showRandomSelection = () => {
       if (data.status !== 404) {
         mediaSelection.push(data);
         checkImage(data);
+        checkRating(data);
       }
       paintSelection(mediaSelection);
       listenMakeFavoriteHeart();
@@ -585,12 +588,14 @@ const getSelectionHtmlCode = (media) => {
   htmlCode += `</span>`;
   htmlCode += `</div>`;
   htmlCode += `<div class="media__poster-rating">`;
-  htmlCode += `<span class="media__poster-stars">`;
-  htmlCode += ` <i class="fas fa-star"></i>`;
-  htmlCode += `<i class="fas fa-star"></i>`;
-  htmlCode += `<i class="fas fa-star"></i>`;
-  htmlCode += `<i class="fas fa-star"></i>`;
-  htmlCode += `<i class="far fa-star"></i>`;
+  htmlCode += `<span class="media__poster-stars">${calculateRatingStars(
+    media.rating.average
+  )}`;
+  //   htmlCode += ` <i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="fas fa-star"></i>`;
+  //   htmlCode += `<i class="far fa-star"></i>`;
   htmlCode += `</span>`;
   htmlCode += `<span class="media__poster-score">${media.rating.average}</span>`;
   htmlCode += `</div>`;
@@ -675,6 +680,7 @@ const showFavorites = () => {
         if (data.status !== 404) {
           mediaSelection.push(data);
           checkImage(data);
+          checkRating(data);
         }
         paintSelection(mediaSelection);
         listenMakeFavoriteHeart();
@@ -764,6 +770,7 @@ const showWatched = () => {
         if (data.status !== 404) {
           mediaSelection.push(data);
           checkImage(data);
+          checkRating(data);
         }
         paintSelection(mediaSelection);
         listenMakeWatchedEye();
@@ -890,9 +897,68 @@ const showErrorMessage = () => {
 startWelcomeApp();
 
 
-// Si el rating es null, no mostrarlo
-// Mostrar número de stars en función de la nota
-
+// check rating
 const checkRating = (result) => {
-if (!result.rating.average)
+  if (!result.rating.average) {
+    result.rating.average = '';
+  } else {
+    calculateRatingStars(result.rating.average);
+  }
+};
+
+// calculate stars based on average score
+const calculateRatingStars = (average) => {
+  let stars = '';
+  switch (true) {
+    case average > 9:
+      for (let i = 0; i < 5; i++) {
+        stars += '<i class="fas fa-star"></i>';
+      }
+      break;
+    case average > 8:
+      for (let i = 0; i < 4; i++) {
+        stars += '<i class="fas fa-star"></i>';
+      }
+      stars += '<i class="fas fa-star-half-alt"></i>';
+      break;
+    case average > 7:
+      for (let i = 0; i < 4; i++) {
+        stars += '<i class="fas fa-star"></i>';
+      }
+      stars += `<i class="far fa-star"></i>`;
+      break;
+    case average > 6:
+      for (let i = 0; i < 3; i++) {
+        stars += '<i class="fas fa-star"></i>';
+      }
+      stars += '<i class="fas fa-star-half-alt"></i>';
+      stars += `<i class="far fa-star"></i>`;
+      break;
+    case average > 4:
+      for (let i = 0; i < 2; i++) {
+        stars += '<i class="fas fa-star"></i>';
+      }
+      stars += '<i class="fas fa-star-half-alt"></i>';
+      for (let i = 0; i < 2; i++) {
+        stars += `<i class="far fa-star"></i>`;
+      }
+      break;
+    case average > 3:
+      for (let i = 0; i < 2; i++) {
+        stars += '<i class="fas fa-star"></i>';
+      }
+      for (let i = 0; i < 3; i++) {
+        stars += `<i class="far fa-star"></i>`;
+      }
+      break;
+    case average > 1:
+      stars += '<i class="fas fa-star"></i>';
+      for (let i = 0; i < 4; i++) {
+        stars += `<i class="far fa-star"></i>`;
+      }
+      break;
+    default:
+      stars = '';
+  }
+  return stars;
 };

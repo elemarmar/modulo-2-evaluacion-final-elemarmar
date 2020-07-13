@@ -69,6 +69,7 @@ const showWatched = () => {
         if (data.status !== 404) {
           mediaSelection.push(data);
           checkImage(data);
+          checkRating(data);
         }
         paintSelection(mediaSelection);
         listenMakeWatchedEye();
