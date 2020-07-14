@@ -144,11 +144,19 @@ Pues nada, una de estas:
 
 ### 1. Seguimiento del usuario
 
-![image-20200713132445343](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713132445343.png)
+<p align="center">
+
+![image-20200713132445343](./info/image-20200713132445343.png)
+
+</p>
 
 Nada más entrar te pide tu nombre y que escojas un avatar de tu gusto. Una vez hecho esto, la información queda guardada en el localStorage para no preguntarte de nuevo. 
 
-![image-20200713132635397](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713132635397.png)
+<p align="center">
+  
+![image-20200713132635397](./info/image-20200713132635397.png)
+
+</p>
 
 Tras la pantalla de registro se nos muestra una pantalla de bienvenida en la que se saluda al usuario y se pinta una cita aleatoria de películas. Al pulsar en cualquier tecla, nos llevaría a la aplicación en sí. Esta pantalla de bienvenida nos aparece en los siguientes supuestos:
 
@@ -161,7 +169,11 @@ Tras la pantalla de registro se nos muestra una pantalla de bienvenida en la que
 
 ### Sección de perfil
 
-![image-20200713133047285](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133047285.png)
+<p align="center">
+
+![image-20200713133047285](./info/image-20200713133047285.png)
+
+</p>
 
 La página cuenta además con una sección de perfil al pulsar en la imagen del menú en la parte superior derecha. Esta sección abre un desplegable en el que se muestra el avatar del usuario, su nombre y estadísticas sobre el número de series que ha visto y el nº de series vistas.
 
@@ -169,15 +181,23 @@ La página cuenta además con una sección de perfil al pulsar en la imagen del 
 
 ## 2. Explorador de series
 
-![image-20200713133237283](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133237283.png)
+<p align="center">
 
-![image-20200713133412454](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133412454.png)
+![image-20200713133237283](./info/image-20200713133237283.png)
+
+![image-20200713133412454](./info/image-20200713133412454.png)
+
+</p>
 
 La página cuenta con un explorador de series en el que se muestran series aleatorias que coinciden con el filtrado aplicado. Si no hay filtrado, entonces aparecen series de todos los géneros. Como se aprecia en la imagen, si una serie no contara con imagen en la api de TV Maze, la imagen sería la del avatar del usuario pero enfadado 😡.
 
 ## 3. Listas de favoritos y vistas
 
-<img src="/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133441036.png" alt="image-20200713133441036" style="zoom:33%;" />
+<p align="center">
+
+<img src="/./info/image-20200713133441036.png" alt="image-20200713133441036" style="zoom:33%;" />
+
+</p>
 
 Al hacer hover sobre una carátula de serie se nos ofrece información sobre su rating y dependiendo del numero se nos muestran las estrellas. 
 
@@ -185,17 +205,29 @@ Al hacer hover sobre una carátula de serie se nos ofrece información sobre su 
 
 En este modo también podemos seleccionar una película como **favorita** o **vista**, cambiando el aspecto de los iconos.
 
-![image-20200713133621672](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133621672.png)
+<p align="center">
+
+![image-20200713133621672](./info/image-20200713133621672.png)
+
+</p>
 
 Pinchando tanto en el corazón del menú como en la sección favoritos se nos mostrarían todas las películas que tenemos marcadas como favoritas. Desde ahí podemos quitarlas de favoritas pinchando en el corazón que aparece cuando hacemos hover en el poster. 
 
-![image-20200713133717875](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133717875.png)
+<p align="center">
+
+![image-20200713133717875](./info/image-20200713133717875.png)
+
+</p>
 
 La misma lógica se sigue con las películas vistas y cuando pulsamos el botón del ojo, que nos lleva a la sección de películas marcadas. como vistas. 
 
 ## 4. Búsqueda de series
 
-![image-20200713133810324](/Users/elemarmar/Desktop/ex/modulo-2-evaluacion-final-elemarmar/info/image-20200713133810324.png)
+<p align="center">
+
+![image-20200713133810324](./info/image-20200713133810324.png)
+
+</p>
 
 Si escribimos algo en el buscador, la página nos mía las series cuyo título coincida con nuestra búsqueda. 
 
@@ -208,6 +240,7 @@ Para la realización de la página no he estado sola, he podido servirme del tra
 - [**TV Maze api**](https://www.tvmaze.com/api): utilizado para obtener información sobre series.
 - **[Movie quotes de Lucas Vilaboim](https://github.com/vilaboim/movie-quotes/tree/e72e64502486d9d9d528277a1dbe94f20f011bc6)**: utilizado para pintar citas de cine en la página de bienvenida. 
 - **[Avataaars Sprites](https://www.npmjs.com/package/@dicebear/avatars-avataaars-sprites)**: utilizado para generar los avatares de la página. 
+- **[Popcorn Time](https://img.utdstc.com/screen/1/popcorn-time-009.jpg:300)**: como podéis ver no soy ninguna artista diseñadora 👩🏻‍🎨 y me he inspirado casi al milímetro en la aplicación popcorntime, que siempre me ha gustaod mucho su interfaz. He añadido algunos cambios y me gustaría añadir más en el futuro.
 
 ---
 
