@@ -75,7 +75,7 @@ const generateRandomSelection = (items) => {
     const number = randomNumber(4916);
     // make sure ids aren't repeated
     if (idSelection.indexOf(number) === -1) {
-      idSelection.push(number);
+      idSelection.push(number); //--length (while)
     }
   }
 };
